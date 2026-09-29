@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет техзаказчика · РНИМУ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --bg: #f5f6f8; --card: #ffffff; --border: #d9dde3; --border-light: #eceff3;
+            --text: #1a1a1a; --text-muted: #7a8290; --text-soft: #a0a8b5;
+            --link: #1e6fd6; --primary: #2c6fc4;
+            --green-bg: #e3f3e3; --green-t: #2c7a2c;
+            --yellow-bg: #fbf3d6; --yellow-t: #8a6a10;
+            --gray-bg: #eceff3; --gray-t: #5a6473;
+            --blue-bg: #e1ecfa; --blue-t: #1e4f8f;
+            --red-bg: #f9e1e1; --red-t: #b32424;
+            --teal-bg: #e0f2f1; --teal-t: #00695c;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Verdana, sans-serif; font-size: 13px; color: var(--text); background: var(--bg); min-height: 100vh; }
+
+        .lk-header { background: #fff; border-bottom: 1px solid var(--border); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+        .lk-header .brand { display: flex; align-items: center; gap: 14px; }
+        .lk-header .brand .title-block .app-name { font-size: 16px; font-weight: 700; }
+        .lk-header .brand .title-block .user-name { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 2px; }
+        .lk-header .header-actions { display: flex; align-items: center; gap: 10px; }
+        .lk-header .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: #f0f2f5; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); position: relative; }
+        .lk-header .icon-btn:hover { background: #e3e8ee; color: var(--text); }
+        .lk-header .icon-btn .dot { position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: #e53935; border: 1.5px solid #fff; }
+        .lk-header .user-chip { display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 20px; background: #f0f2f5; cursor: pointer; }
+        .lk-header .user-chip .avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg,#5a8bc5 0%,#2d5a87 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+        .lk-header .user-chip .who { font-size: 12px; font-weight: 600; }
+        .lk-header .user-chip .role { font-size: 10.5px; color: var(--text-muted); }
+
+        .lk-nav { background: #fff; border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; gap: 4px; overflow-x: auto; }
+        .lk-nav .nav-item { padding: 12px 16px; font-size: 13px; color: var(--text-muted); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; display: inline-flex; align-items: center; gap: 7px; }
+        .lk-nav .nav-item:hover { color: var(--text); }
+        .lk-nav .nav-item.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+        .lk-nav .nav-item i { font-size: 12px; }
+
+        .lk-content { max-width: 1800px; margin: 0 auto; padding: 20px 28px 60px; }
+        .lk-page { display: none; }
+        .lk-page.active { display: block; }
+        .page-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        .page-sub { font-size: 13px; color: var(--text-muted); font-style: italic; margin-bottom: 18px; }
+
+        .action-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .action-bar .abtn { padding: 7px 16px; background: #fff; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 12.5px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.15s; }
+        .action-bar .abtn:hover { background: #f5f8fc; border-color: #b5c9dc; }
+        .action-bar .abtn i { color: var(--text-muted); font-size: 11px; }
+        .action-bar .spacer { flex: 1; }
+        .action-bar .search-box { position: relative; }
+        .action-bar .search-box input { padding: 7px 12px 7px 32px; border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; width: 220px; font-family: inherit; background: #fff; }
+        .action-bar .search-box i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-soft); font-size: 12px; }
+        .action-bar .search-box .kbd { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--text-soft); background: #f0f2f5; padding: 1px 5px; border-radius: 3px; }
+
+        .data-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--border); font-size: 12.5px; }
+        .data-table thead th { background: #f5f6f8; text-align: left; padding: 10px 12px; font-weight: 600; color: #3a4a5a; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border-light); font-size: 12px; white-space: nowrap; }
+        .data-table thead th:last-child { border-right: none; }
+        .data-table tbody td { padding: 12px; border-bottom: 1px solid var(--border-light); border-right: 1px solid var(--border-light); vertical-align: top; }
+        .data-table tbody td:last-child { border-right: none; }
+        .data-table tbody tr:hover td { background: #fafbfd; }
+        .data-table tbody tr:last-child td { border-bottom: none; }
+        .data-table .cell-link { color: var(--link); text-decoration: underline; cursor: pointer; }
+        .data-table .cell-link:hover { color: #0e4a99; }
+
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+        .badge.green { background: var(--green-bg); color: var(--green-t); }
+        .badge.yellow { background: var(--yellow-bg); color: var(--yellow-t); }
+        .badge.gray { background: var(--gray-bg); color: var(--gray-t); }
+        .badge.blue { background: var(--blue-bg); color: var(--blue-t); }
+        .badge.red { background: var(--red-bg); color: var(--red-t); }
+
+        .monitor-wrap { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+        .monitor-toolbar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #fafbfd; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .monitor-toolbar .mtbtn { padding: 6px 12px; background: #fff; border: 1px solid var(--border); border-radius: 5px; font-size: 12px; cursor: pointer; color: var(--text); display: inline-flex; align-items: center; gap: 5px; }
+        .monitor-toolbar .mtbtn:hover { background: #f5f8fc; }
+        .monitor-toolbar .mtbtn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .monitor-toolbar .mtbtn.active i { color: #fff; }
+        .monitor-toolbar .mtbtn i { color: var(--text-muted); font-size: 11px; }
+        .monitor-toolbar .mtsep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
+
+        .monitor-kpi { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
+        .monitor-kpi .kpi { background: #fff; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; }
+        .monitor-kpi .kpi .lbl { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; }
+        .monitor-kpi .kpi .val { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .monitor-kpi .kpi .val.pos { color: #1c7a3f; }
+        .monitor-kpi .kpi .val.neg { color: #b32424; }
+        .monitor-kpi .kpi .sub { font-size: 10.5px; color: var(--text-soft); }
+
+        .monitor-chart { padding: 14px 18px; border-bottom: 1px solid var(--border); background: #fafbfd; }
+        .monitor-chart .chart-title { font-size: 11px; font-weight: 700; color: #3a4a5a; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .chart-row { display: grid; grid-template-columns: 180px 1fr 150px; align-items: center; gap: 12px; margin-bottom: 6px; }
+        .chart-row .chart-label { font-size: 12px; font-weight: 600; color: #3a4a5a; }
+        .chart-row .chart-bar-wrap { height: 18px; background: #eceff3; border-radius: 3px; overflow: hidden; }
+        .chart-row .chart-bar { height: 100%; transition: width 0.4s; }
+        .chart-bar.plan { background: linear-gradient(90deg,#4a8bc5,#2d5a87); }
+        .chart-bar.agreed { background: linear-gradient(90deg,#f0b450,#d99a2c); }
+        .chart-bar.cash { background: linear-gradient(90deg,#57b56b,#2f8a48); }
+        .chart-bar.remain-plan { background: linear-gradient(90deg,#e57373,#b32424); }
+        .chart-bar.remain-contract { background: linear-gradient(90deg,#9575cd,#5e35b1); }
+        .chart-row .chart-value { text-align: right; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .chart-row .chart-value.pos { color: #1c7a3f; }
+        .chart-row .chart-value.neg { color: #b32424; }
+
+        .monitor-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+        .monitor-table thead th { background: #f5f6f8; text-align: left; padding: 8px 10px; font-weight: 600; color: #3a4a5a; border-bottom: 1px solid var(--border); font-size: 11.5px; white-space: nowrap; position: sticky; top: 0; z-index: 3; }
+        .monitor-table thead th.right { text-align: right; }
+        .monitor-table thead th.center { text-align: center; }
+        .monitor-table tbody td { padding: 7px 10px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+        .monitor-table tbody tr.group-row td { background: #eef3f9; font-weight: 700; color: #1a3a5c; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .monitor-table tbody tr.worker-row td { background: #fafbfd; }
+        .monitor-table tbody tr.worker-row:hover td { background: #f2f6fb; }
+        .monitor-table tbody tr.zayavka-row td { background: #fff; font-size: 11.5px; color: #3a4a5a; }
+        .monitor-table tbody tr.zayavka-row:hover td { background: #f5f8fc; cursor: pointer; }
+        .monitor-table tbody tr.zayavka-row td.indent { padding-left: 44px; }
+        .monitor-table tbody tr.subtotal-row td { background: #fbf8ec; font-weight: 700; color: #1a3a5c; border-top: 1px solid #e0c060; border-bottom: 1px solid #e0c060; }
+        .monitor-table tbody tr.grand-row td { background: #fdf6d0; font-weight: 700; color: #1a3a5c; font-size: 12.5px; border-top: 2px solid #e0c060; border-bottom: 2px solid #e0c060; }
+
+        .toggle-btn { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: #fff; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; font-weight: 700; font-size: 12px; line-height: 1; color: #3a4a5a; font-family: monospace; margin-right: 8px; vertical-align: middle; }
+        .toggle-btn:hover { background: #f0f4f9; border-color: #b5c9dc; }
+
+        .ind { display: inline-block; width: 9px; height: 9px; border-radius: 50%; vertical-align: middle; margin-right: 6px; border: 1px solid rgba(0,0,0,0.1); }
+        .ind.green { background: #4caf50; }
+        .ind.red { background: #e53935; }
+        .ind.yellow { background: #fbc02d; }
+        .ind.gray { background: #b0bec5; }
+        .status-text { font-size: 11.5px; font-weight: 600; }
+        .status-text.green { color: #1c7a3f; }
+        .status-text.red { color: #b32424; }
+        .status-text.yellow { color: #8a6a10; }
+        .status-text.gray { color: #7a8290; }
+        .status-cell { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+
+        .num { text-align: right; }
+        .num.pos { color: #1c7a3f; }
+        .num.neg { color: #b32424; }
+        .plan-cell { font-weight: 600; color: #1a3a5c; }
+        .agreed-cell { font-weight: 600; color: #8a5a10; }
+
+        .act-btn { padding: 3px 9px; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; cursor: pointer; color: #3a4a5a; }
+        .act-btn:hover { background: #f0f4f9; }
+        .prop-tag { display: inline-block; background: #fbf3d6; border: 1px solid #e0c060; color: #8a6a10; font-size: 10.5px; font-weight: 600; padding: 1px 6px; border-radius: 3px; margin-left: 6px; }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20,30,45,0.4); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal-form { background: #fff; border-radius: 10px; box-shadow: 0 12px 40px rgba(0,0,0,0.2); min-width: 780px; max-width: 1000px; width: 92%; max-height: 92vh; display: flex; flex-direction: column; font-size: 13px; }
+        .modal-form.wide { max-width: 1400px; }
+        .modal-form .modal-title { padding: 16px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .modal-form .modal-title h3 { font-size: 15px; font-weight: 700; }
+        .modal-form .modal-title .mt-close { width: 28px; height: 28px; border-radius: 50%; background: #f0f2f5; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px; }
+        .modal-form .modal-title .mt-close:hover { background: #e3e8ee; color: var(--text); }
+        .modal-form .modal-body { padding: 20px 22px; overflow-y: auto; flex: 1; }
+        .form-section-title { font-size: 13px; font-weight: 700; color: #1a3a5c; padding: 0 0 8px; margin: 16px 0 10px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+        .form-section-title:first-child { margin-top: 0; }
+
+        table.form-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; font-size: 12.5px; }
+        table.form-table td { padding: 9px 12px; border-bottom: 1px solid var(--border-light); border-right: 1px solid var(--border-light); vertical-align: top; }
+        table.form-table td:last-child { border-right: none; }
+        table.form-table tr:last-child td { border-bottom: none; }
+        table.form-table td.fl { background: #fafbfd; color: var(--text-muted); font-weight: 600; width: 180px; white-space: nowrap; }
+        table.form-table td.fv.mono { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+        .contract-link { display: inline-flex; align-items: center; gap: 6px; color: var(--link); text-decoration: underline; font-weight: 600; cursor: pointer; }
+        .contract-link:hover { color: #0e4a99; }
+        .contract-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+        .zak-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: #fff; padding: 0 6px; margin: -4px -4px 12px -4px; overflow-x: auto; }
+        .zak-tab { padding: 9px 18px; font-size: 12.5px; color: var(--text-muted); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
+        .zak-tab:hover { color: var(--text); }
+        .zak-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+
+        .zak-head { background: #d9edea; border-left: 4px solid #4fa89a; padding: 8px 14px; font-size: 13.5px; font-weight: 600; color: #17554a; margin-bottom: 14px; }
+        .zak-head .zak-num { color: #17554a; }
+
+        .zak-row-actions { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+
+        .zak-icon-btn { width: 26px; height: 26px; border-radius: 50%; background: #3aa76d; color: #fff; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; line-height: 1; }
+        .zak-icon-btn:hover { background: #2f8c5a; }
+        .zak-icon-btn.orange { background: #f0a030; color: #fff; }
+        .zak-icon-btn.orange:hover { background: #d98a1a; }
+
+        .zak-dropdown { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; cursor: pointer; color: #3a4a5a; }
+        .zak-dropdown:hover { background: #f5f8fc; }
+        .zak-dropdown .caret { color: #e28a1a; font-size: 11px; }
+
+        .zak-link { color: #1e6fd6; text-decoration: none; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .zak-link:hover { text-decoration: underline; }
+        .zak-link i { font-size: 11px; color: #2c8a5a; }
+
+        table.zak-table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; border: 1px solid var(--border); margin-bottom: 22px; }
+        table.zak-table thead th { background: #fff; text-align: left; padding: 8px 10px; font-weight: 600; color: #3a4a5a; font-size: 11.5px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border-light); white-space: nowrap; }
+        table.zak-table thead th:last-child { border-right: none; }
+        table.zak-table tbody td { padding: 10px; border-bottom: 1px solid var(--border-light); border-right: 1px solid var(--border-light); vertical-align: top; }
+        table.zak-table tbody td:last-child { border-right: none; }
+        table.zak-table tbody tr:last-child td { border-bottom: none; }
+        table.zak-table .cell-center { text-align: center; }
+        table.zak-table .cell-right { text-align: right; font-variant-numeric: tabular-nums; }
+        table.zak-table .cell-muted { color: var(--text-muted); font-size: 11.5px; }
+        table.zak-table .row-total { background: #fff; font-weight: 700; color: #1a3a5c; text-align: right; padding: 10px 12px; border-top: 1px solid var(--border); font-size: 12.5px; }
+        table.zak-table .row-total td { border-right: none; border-bottom: none; }
+
+        table.zak-req-table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; border: 1px solid var(--border); margin-bottom: 22px; }
+        table.zak-req-table thead th { background: #fff; text-align: left; padding: 8px 10px; font-weight: 600; color: #3a4a5a; font-size: 11.5px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border-light); white-space: nowrap; }
+        table.zak-req-table thead th:last-child { border-right: none; }
+        table.zak-req-table tbody td { padding: 10px; border-bottom: 1px solid var(--border-light); border-right: 1px solid var(--border-light); vertical-align: top; font-size: 12px; }
+        table.zak-req-table tbody td:last-child { border-right: none; }
+        table.zak-req-table tbody tr:last-child td { border-bottom: none; }
+        table.zak-req-table .cell-center { text-align: center; }
+        table.zak-req-table .cell-muted { color: var(--text-muted); font-size: 11.5px; }
+        table.zak-req-table .vid-prod { color: #3a4a5a; }
+        table.zak-req-table .vid-prod .req-mark { color: #c0392b; font-weight: 600; }
+
+        .zak-checkbox { width: 18px; height: 18px; border: 1px solid #b5c9dc; border-radius: 3px; background: #fff; display: inline-block; vertical-align: middle; }
+
+        .file-chip { display: inline-flex; align-items: center; gap: 5px; color: #3aa76d; font-size: 11.5px; cursor: pointer; font-weight: 600; }
+        .file-chip .plus-mini { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: #3aa76d; color: #fff; font-size: 11px; font-weight: 700; }
+        .file-chip.small { font-size: 11px; }
+
+        .cell-caret { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 1px solid var(--border); background: #fff; border-radius: 3px; cursor: pointer; color: #e28a1a; font-size: 10px; }
+
+        .kek-chip { display: inline-block; padding: 2px 8px; border-radius: 3px; background: #f0f2f5; color: #3a4a5a; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+
+        .zak-section-title { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 700; color: #2c6b45; background: #eaf5ee; border-left: 3px solid #3aa76d; padding: 8px 12px; margin: 20px 0 10px; }
+        .zak-section-title:first-child { margin-top: 0; }
+
+        .req-form { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; background: #fff; padding: 4px 0 14px; font-size: 12.5px; }
+        .req-form .col { display: flex; flex-direction: column; }
+        .req-form .req-group-title { font-size: 12.5px; font-weight: 700; color: #2c6b45; margin: 14px 0 6px; }
+        .req-row { display: grid; grid-template-columns: 190px 1fr; gap: 10px; align-items: start; margin-bottom: 6px; }
+        .req-row .req-lbl { font-size: 12px; color: var(--text-muted); padding-top: 6px; padding-right: 8px; font-weight: 500; }
+        .req-row .req-val { display: flex; gap: 4px; align-items: stretch; }
+        .req-row .req-input, .req-row .req-select, .req-row .req-textarea { flex: 1; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 12.5px; font-family: inherit; background: #fff; color: var(--text); min-height: 30px; }
+        .req-row .req-textarea { min-height: 68px; resize: vertical; line-height: 1.4; }
+        .req-row .req-input.highlight { background: #fdf6d0; border-color: #e0c060; font-weight: 600; }
+        .req-row .req-input.blue { background: #e1ecfa; border-color: #a8c8e8; color: #1a3a5c; }
+        .req-row .req-btn { width: 28px; height: 30px; border: 1px solid var(--border); background: #fff; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px; flex-shrink: 0; }
+        .req-row .req-btn:hover { background: #f5f8fc; }
+
+        .goal-block { background: #fbe9e7; border: 1px solid #f0c8bf; border-radius: 4px; padding: 10px 14px; font-size: 12px; color: #7a2a1a; line-height: 1.45; margin-bottom: 8px; }
+        .goal-block .goal-text { white-space: pre-line; }
+
+        .return-block { background: #eaf5ee; border-left: 4px solid #3aa76d; padding: 12px 16px; margin-top: 24px; }
+        .return-block .req-group-title { color: #2c6b45; font-size: 13px; font-weight: 700; margin: 0 0 10px 0; }
+        .return-block .req-row .req-lbl { color: #2c6b45; }
+
+        .props-form { display: grid; grid-template-columns: minmax(180px, 260px) 1fr; gap: 8px 18px; background: #fff; padding: 6px 0 14px; font-size: 12.5px; }
+        .props-form .pf-lbl { font-size: 12px; color: var(--text-muted); padding-top: 6px; padding-right: 8px; }
+        .props-form .pf-val { display: flex; gap: 4px; align-items: stretch; }
+        .props-form .req-input, .props-form .req-select, .props-form .req-textarea { flex: 1; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 12.5px; font-family: inherit; background: #fff; color: var(--text); min-height: 30px; }
+        .props-form .req-textarea { min-height: 60px; resize: vertical; line-height: 1.4; }
+        .props-form .req-btn { width: 28px; height: 30px; border: 1px solid var(--border); background: #fff; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 12px; flex-shrink: 0; }
+        .props-form .req-btn:hover { background: #f5f8fc; }
+        .props-form .check-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+        .props-form .check-row input[type="checkbox"] { width: 14px; height: 14px; }
+        .props-form .check-row label { font-size: 12.5px; color: var(--text); }
+        .time-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .time-row .req-input { max-width: 130px; }
+
+        .oboz-form { background: #fff; padding: 4px 0 14px; }
+        .oboz-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
+        .oboz-row { display: grid; grid-template-columns: 180px 1fr; gap: 10px; align-items: start; margin-bottom: 8px; }
+        .oboz-row .oboz-lbl { font-size: 12px; color: var(--text-muted); padding-top: 6px; padding-right: 8px; font-weight: 500; }
+        .oboz-row .oboz-val { display: flex; gap: 4px; align-items: stretch; }
+        .oboz-row .req-input, .oboz-row .req-textarea { flex: 1; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 12.5px; font-family: inherit; background: #fff; color: var(--text); min-height: 30px; }
+        .oboz-row .req-textarea { min-height: 70px; resize: vertical; line-height: 1.4; }
+        .oboz-title { font-size: 13px; font-weight: 700; color: #2c6b45; margin: 14px 0 8px; }
+
+        .nmck-mini-table { width: 100%; border-collapse: collapse; font-size: 12px; border: 1px solid var(--border); }
+        .nmck-mini-table td { padding: 6px 10px; border-bottom: 1px solid var(--border-light); border-right: 1px solid var(--border-light); }
+        .nmck-mini-table td:last-child { border-right: none; text-align: right; font-variant-numeric: tabular-nums; }
+        .nmck-mini-table tr:last-child td { border-bottom: none; }
+        .nmck-mini-table td:first-child { background: #fafbfd; color: #3a4a5a; }
+
+        .big-reason { margin-top: 16px; padding: 12px 16px; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; line-height: 1.55; color: #1a1a1a; white-space: pre-line; }
+        .big-reason-title { font-size: 12.5px; font-weight: 700; color: #2c6b45; margin-bottom: 8px; }
+
+        .placeholder { padding: 40px 20px; text-align: center; color: var(--text-muted); background: #fff; border: 1px dashed var(--border); border-radius: 8px; }
+        .placeholder i { font-size: 32px; color: var(--text-soft); margin-bottom: 10px; display: block; }
+
+        .statusbar { padding: 8px 28px; background: #fff; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); display: flex; gap: 18px; flex-wrap: wrap; position: fixed; bottom: 0; left: 0; right: 0; }
+        .lk-content { padding-bottom: 60px; }
+    </style>
+</head>
+<body>
+
+<header class="lk-header">
+    <div class="brand">
+        <div class="title-block">
+            <div class="app-name">Личный кабинет техзаказчика</div>
+            <div class="user-name">Иванов Иван Иванович</div>
+        </div>
+    </div>
+    <div class="header-actions">
+        <button class="icon-btn" title="Уведомления"><i class="fas fa-bell"></i><span class="dot"></span></button>
+        <button class="icon-btn" title="Настройки"><i class="fas fa-cog"></i></button>
+        <div class="user-chip">
+            <div class="avatar">ИИ</div>
+            <div><div class="who">Иванов И.И.</div><div class="role">Техзаказчик</div></div>
+        </div>
+    </div>
+</header>
+
+<nav class="lk-nav" id="lkNav">
+    <button class="nav-item active" data-page="zayavki"><i class="fas fa-file-invoice"></i> Заявки</button>
+    <button class="nav-item" data-page="monitoring"><i class="fas fa-chart-line"></i> Мониторинг лимитов</button>
+    <button class="nav-item" data-page="soglasovaniya"><i class="fas fa-check-circle"></i> Согласования</button>
+</nav>
+
+<main class="lk-content">
+    <section class="lk-page active" id="page-zayavki">
+        <div class="page-title">Заявки на закупку</div>
+        <div class="page-sub">Все заявки техзаказчика, включая созданные на основании</div>
+
+        <div class="action-bar">
+            <button class="abtn"><i class="fas fa-plus"></i> Создать</button>
+            <button class="abtn">Создать на основании</button>
+            <button class="abtn">Отправить</button>
+            <button class="abtn">Оповестить</button>
+            <button class="abtn">Отчеты</button>
+            <button class="abtn">Печать</button>
+            <div class="spacer"></div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Поиск">
+                <span class="kbd">Ctrl+F</span>
+            </div>
+        </div>
+
+        <table class="data-table">
+           <thead>
+    <tr>
+        <th style="width:22%;">Предмет закупки</th>
+        <th style="width:8%;">Рег. номер и дата</th>
+        <th style="width:10%;">Номер резервирования ДС</th>
+        <th style="width:14%;">Данные о договоре и документации на торги</th>
+        <th style="width:7%;">Сумма</th>
+        <th style="width:11%;">Состояние</th>
+        <th style="width:8%;">Текущий согласант</th>
+        <th style="width:12%;">Связанные документы</th>
+        <th style="width:8%;">Исполнение договора</th>
+    </tr>
+</thead>
+            <tbody>
+                <tr>
+                    <td><a class="cell-link" onclick="openZakupkaModal('1989')">Заявка на закупку - 2187 - Ремонт оборудования</a></td>
+                    <td>2187 от<br>18.09.2026</td><td>2026-3658</td>
+                    <td>№ договора: проект<br>Извещение: проект</td>
+                    <td>360 000 руб.</td>
+                    <td>Согласование:<br>На согласовании</td>
+                    <td>Ткаченко ...</td>
+                    <td><a class="cell-link" onclick="openDogovorModal('223СК-0000352 от 22.09.2026')">Сведения о контракте<br>223СК-0000352 от 22.09.2026</a></td>
+                    <td><a class="cell-link" onclick="openGrafikModal('223СК-0000352 от 22.09.2026')">График платежей</a></td>
+                </tr>
+                <tr>
+                    <td><a class="cell-link" onclick="openZakupkaModal('1990')">Заявка на закупку - 2026-3659/2188 - Оказание услуг по договору ГПХ</a></td>
+                    <td>2188 от<br>18.09.2026</td><td>2026-3659</td>
+                    <td>№ договора: 08а-23кон<br>от 22.09.2026</td>
+                    <td>2 500 000 руб.</td>
+                    <td>Согласование:<br>Согласован, ...</td>
+                    <td>Разенков ...</td>
+                    <td><a class="cell-link" onclick="openDogovorModal('310СК-0000352 от 02.09.2026')">Сведения о контракте<br>310СК-0000352 от 02.09.2026</a></td>
+                    <td><a class="cell-link" onclick="openGrafikModal('310СК-0000352 от 02.09.2026')">График платежей</a></td>
+                </tr>
+                <tr>
+                    <td><a class="cell-link" onclick="openZakupkaModal('1991')">Заявка на закупку - 3660 - Оказание преподавательских услуг</a></td>
+                    <td>2189 от<br>18.09.2026</td><td>2026-3660</td>
+                    <td>№ договора: проект</td>
+                    <td>1 300 000 руб.</td>
+                    <td>Согласование:<br>Согласован, ...</td>
+                    <td>Разенков ...</td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td><a class="cell-link" onclick="openZakupkaModal('1992')">Заявка на запрос цен - 3661 - Закупка моноблоков</a></td>
+                    <td>2190 от<br>18.09.2026</td><td>2026-3661</td>
+                    <td>№ договора: проект<br>Извещение: проект</td>
+                    <td>550 000 руб.</td>
+                    <td>Согласование:<br>Согласован, ...</td>
+                    <td>Разенков ...</td><td></td><td></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="lk-page" id="page-monitoring">
+        <div class="page-title">Мониторинг лимитов на закупки</div>
+        <div class="page-sub">Целевые показатели ПФХД 2026 · данные на 25.09.26 · <span id="cntWorkers">0</span> сотрудников · <span id="cntZayavok">0</span> заявок</div>
+
+        <div class="monitor-wrap">
+            <div class="monitor-toolbar">
+                <button class="mtbtn" id="load1cBtn"><i class="fas fa-download"></i> Выгрузить из 1С</button>
+                <button class="mtbtn" id="applyProposalsBtn"><i class="fas fa-check"></i> Применить корректировки</button>
+                <div class="mtsep"></div>
+                <span style="font-size:11.5px;color:#7a8290;margin-right:4px;">Группировка:</span>
+                <button class="mtbtn active" id="grpCfoBtn" onclick="setGrouping('cfo')"><i class="fas fa-sitemap"></i> ЦФО</button>
+                <button class="mtbtn" id="grpKekBtn" onclick="setGrouping('kek')"><i class="fas fa-tags"></i> КЭК</button>
+                <div class="mtsep"></div>
+                <input type="text" id="searchInput" placeholder="Поиск: ЦФО / сотрудник / № заявки / КЭК" oninput="applySearch()" style="padding:6px 10px;border:1px solid #d9dde3;border-radius:5px;font-size:12px;width:260px;font-family:inherit;">
+                <button class="mtbtn" onclick="clearSearch()"><i class="fas fa-times"></i> Сброс</button>
+                <button class="mtbtn" onclick="exportCSV()"><i class="fas fa-file-excel"></i> Экспорт CSV</button>
+            </div>
+            <div class="monitor-kpi" id="kpiPanel"></div>
+            <div class="monitor-chart" id="chartPanel">
+                <div class="chart-title"><i class="fas fa-chart-column"></i> Диаграмма целевых показателей</div>
+                <div id="chartMain"></div>
+            </div>
+            <table class="monitor-table" id="kpiTable">
+                <thead>
+                    <tr>
+                        <th style="min-width:320px;" id="thName">Наименование / ЦФО / Сотрудник / Заявка</th>
+                        <th class="right" style="width:130px;">План, ₽</th>
+                        <th class="right" style="width:130px;">Согласовано, ₽</th>
+                        <th class="right" style="width:130px;">Касса, ₽</th>
+                        <th class="right" style="width:130px;">Остаток от плана</th>
+                        <th class="right" style="width:130px;">Остаток от договора</th>
+                        <th class="center" style="width:130px;">Статус</th>
+                        <th style="width:150px;">Действие</th>
+                    </tr>
+                </thead>
+                <tbody id="kpiBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="lk-page" id="page-soglasovaniya">
+        <div class="page-title">Согласования</div>
+        <div class="page-sub">Заявки, требующие внимания техзаказчика</div>
+        <div class="placeholder"><i class="fas fa-check-circle"></i>Раздел в разработке.<br>Здесь будут отображаться заявки, поступившие на согласование.</div>
+    </section>
+</main>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal-form"><div class="modal-title"><h3 id="modalCrumbs">Заявка на закупку</h3><button class="mt-close" onclick="closeModal()">✕</button></div><div class="modal-body" id="modalBody"></div><div class="modal-footer"><button class="mbtn" onclick="closeModal()">Закрыть</button><button class="mbtn primary" onclick="closeModal()">Провести и закрыть</button></div></div>
+</div>
+
+<div class="modal-overlay" id="dogovorOverlay" onclick="if(event.target===this) closeDogovorModal()">
+    <div class="modal-form wide"><div class="modal-title"><h3 id="dogovorTitle">Договор</h3><button class="mt-close" onclick="closeDogovorModal()">✕</button></div><div class="modal-body" id="dogovorBody"></div><div class="modal-footer"><button class="mbtn" onclick="closeDogovorModal()">Закрыть</button><button class="mbtn primary" onclick="closeDogovorModal()">ОК</button></div></div>
+</div>
+
+<div class="modal-overlay" id="grafikOverlay" onclick="if(event.target===this) closeGrafikModal()">
+    <div class="modal-form wide"><div class="modal-title"><h3 id="grafikTitle">График платежей</h3><button class="mt-close" onclick="closeGrafikModal()">✕</button></div><div class="modal-body" id="grafikBody"></div><div class="modal-footer"><button class="mbtn" onclick="closeGrafikModal()">Закрыть</button><button class="mbtn primary" onclick="closeGrafikModal()">ОК</button></div></div>
+</div>
+
+<div class="modal-overlay" id="zakupkaOverlay" onclick="if(event.target===this) closeZakupkaModal()">
+    <div class="modal-form wide">
+        <div class="modal-title">
+            <h3 id="zakupkaTitle">Закупка</h3>
+            <button class="mt-close" onclick="closeZakupkaModal()" title="Закрыть">✕</button>
+        </div>
+        <div class="modal-body" id="zakupkaBody"></div>
+    </div>
+</div>
+
+<div class="statusbar">
+    <span><i class="fas fa-database" style="color:#a0a8b5;"></i> Источник: 1С:УФГУ · ПФХД 2026</span>
+    <span><i class="fas fa-clock" style="color:#a0a8b5;"></i> Обновлено: 25.09.2026</span>
+    <span><i class="fas fa-mouse-pointer" style="color:#a0a8b5;"></i> Клик по ссылке — открыть карточку</span>
+</div>
+
+<script>
+/* ===================== ИТОГИ ===================== */
+const fileTotals = { plan: 125000000, agreed: 293328264.84, cash: 206279185.27, remainPlan: -168328264.84, remainContract: 87049079.57 };
+
+/* ===================== ДОГОВОРЫ ===================== */
+const dogovory = {
+    '223СК-0000352 от 22.09.2026': {
+        title: 'Договор поставки компьютеров 3562-ЕП-26к-СМП от 22.09.2026',
+        predmet: 'Поставка мониторов', num: '223СК-0000352 от 22.09.2026',
+        srokS: '22.09.2026', srokPo: '31.12.2026', kontragent: 'ООО «Торговый дом»', summa: '1 500 000 рублей',
+        poryadok: 'Аванс 30%', sroki: 'в соответствии с графиком выполнения работ',
+        adresa: 'ГНКЦ Материальный склад<br>Аптека основная',
+        kontaktPost: 'Ищенко Валерий, тел. 8(910)123-45-67, e-mail: ish@torg-dom.ru',
+        kontaktPol: 'ГНКЦ Материальный склад – Иванов И.И., 8(914)845-44-55<br>Аптека основная – Елизавета, 8(901)145-44-55',
+        status: 'green', statusText: 'Действует',
+        spec: [
+            { name: 'Ноутбук «Бизнес-Про» 14"', kol: 6, ed: 'шт.', cena: '95 000,00', summa: '360 000 руб.', adres: 'ГНКЦ Материальный склад, Мытищи, Транспортная улица, 11' },
+            { name: 'Монитор 27" IPS', kol: 2, ed: 'шт.', cena: '35 000,00', summa: '300 000 руб.', adres: 'ГНКЦ Материальный склад, Мытищи, Транспортная улица, 11' },
+            { name: 'МФУ лазерное А4', kol: 1, ed: 'шт.', cena: '25 000,00', summa: '25 000 руб.', adres: 'ГНКЦ Материальный склад, Мытищи, Транспортная улица, 11' },
+            { name: 'Моноблок Иволга-505', kol: 21, ed: 'шт.', cena: '95 000,00', summa: '475 000 руб.', adres: 'Москва, Профсоюзная ул, 142' }
+        ]
+    },
+    '310СК-0000352 от 02.09.2026': {
+        title: 'Договор оказания услуг 310СК-0000352 от 02.09.2026',
+        predmet: 'Оказание услуг по договору ГПХ', num: '310СК-0000352 от 02.09.2026',
+        srokS: '02.09.2026', srokPo: '31.12.2026', kontragent: 'ООО «Проф-Сервис»', summa: '2 500 000 рублей',
+        poryadok: 'Постоплата', sroki: 'ежемесячно по акту', adresa: 'ГНКЦ Материальный склад',
+        kontaktPost: 'Петров Сергей, тел. 8(495)123-45-67',
+        kontaktPol: 'ГНКЦ Материальный склад – Иванов И.И., 8(914)845-44-55',
+        status: 'blue', statusText: 'Подписан',
+        spec: [{ name: 'Услуги по договору ГПХ', kol: 1, ed: 'усл.', cena: '2 500 000,00', summa: '2 500 000 руб.', adres: '—' }]
+    }
+};
+
+const grafiki = {
+    '223СК-0000352 от 22.09.2026': {
+        title: 'График платежей по договору 223СК-0000352 от 22.09.2026',
+        rows: [
+            { n: 1, date: '10.04.2026', osnov: 'Аванс 30% по счёту № 112', summa: '360 000 руб.', status: 'green', statusText: 'Оплачен', oplacheno: '360 000 руб.', ostatok: '–' },
+            { n: 2, date: '15.05.2026', osnov: 'Частичная оплата по счёту № 118', summa: '300 000 руб.', status: 'green', statusText: 'Оплачен', oplacheno: '300 000 руб.', ostatok: '–' },
+            { n: 3, date: '20.06.2026', osnov: 'Оплата по счёту № 125', summa: '25 000 руб.', status: 'green', statusText: 'Оплачен', oplacheno: '25 000 руб.', ostatok: '–' },
+            { n: 4, date: '24.07.2026', osnov: 'Окончательный расчёт', summa: '475 000 руб.', status: 'yellow', statusText: 'План', oplacheno: '–', ostatok: '475 000 руб.' }
+        ],
+        itog: 'Всего к оплате: 1 500 000,00 ₽ · Оплачено: 1 025 000,00 ₽ · Остаток: 475 000,00 ₽ · Просрочено: 0,00 ₽'
+    },
+    '310СК-0000352 от 02.09.2026': {
+        title: 'График платежей по договору 310СК-0000352 от 02.09.2026',
+        rows: [
+            { n: 1, date: '30.09.2026', osnov: 'Оплата за сентябрь', summa: '500 000 руб.', status: 'green', statusText: 'Оплачен', oplacheno: '500 000 руб.', ostatok: '–' },
+            { n: 2, date: '31.10.2026', osnov: 'Оплата за октябрь', summa: '500 000 руб.', status: 'yellow', statusText: 'План', oplacheno: '–', ostatok: '500 000 руб.' },
+            { n: 3, date: '30.11.2026', osnov: 'Оплата за ноябрь', summa: '500 000 руб.', status: 'yellow', statusText: 'План', oplacheno: '–', ostatok: '500 000 руб.' },
+            { n: 4, date: '31.12.2026', osnov: 'Окончательный расчёт', summa: '1 000 000 руб.', status: 'yellow', statusText: 'План', oplacheno: '–', ostatok: '1 000 000 руб.' }
+        ],
+        itog: 'Всего к оплате: 2 500 000,00 ₽ · Оплачено: 500 000,00 ₽ · Остаток: 2 000 000,00 ₽ · Просрочено: 0,00 ₽'
+    }
+};
+
+/* ===================== ЗАКУПКИ ===================== */
+const zakupki = {
+    '1989': {
+        head: 'Заявка на закупку от 15.05.2026 № 1989',
+        reqLeft: {
+            vidDoc: 'Заявка на закупку',
+            object: 'Закупка товаров',
+            predmet: 'Поставка оргтехники и расходных материалов для офисных нужд',
+            goal: 'Довожу до Вашего сведения, что текущее МФУ в административном блоке не справляется с нагрузкой отдела: средний объём печати — около 1 200 страниц в месяц, при этом заявленный производителем месячный ресурс устройства — 1 000 страниц. Из-за перегрузки учащились замятия бумаги и ошибки подачи, что приводит к простоям и потере рабочего времени.\n\nКроме того, текущий запас офисной бумаги формата А4 составляет 3 пачки (1 500 листов). При сохранении текущего темпа расхода (±1 200 листов/мес) запаса хватит не более чем на 1 месяц, что создаёт риск остановки документооборота.',
+            sposob: 'Единственный поставщик'
+        },
+        reqRight: {
+            summa: '0,00', annul: false,
+            podrazdelenie: 'Отдел аналитики',
+            podgotovil: 'Кжима Оксана Валерьевна (Отдел аналитики, Аналитик)',
+            otvetstvenny: '',
+            hranenieForma: 'Электронная', hranenieDelo: '',
+            mol: { fio: '', contacts: '' },
+            return: { fio: 'Кжима Оксана Валерьевна', reason: '' }
+        },
+        zakupkaReq: [
+            {
+                n: 1,
+                pryamaya: false,
+                predmet: 'Поставка оргтехники и расходных материалов для офисных нужд',
+                vid: '[310.02] Закупка компьютеров и оргтехники',
+                chestny: 'для собственных нужд',
+                dataZakl: 'до 01.08.2026 года',
+                dataIsp: 'до 01.09.2026 года',
+                podr: 'Центр цифровой трансформации',
+                proekt: 'Милушкина Ольга Юрьевна - Проректор по учебной работе',
+                napr: 'Образовательные услуги ГЗ'
+            }
+        ],
+        props: {
+            name: 'Поставка оргтехники и расходных материалов для офисных нужд',
+            initiator: 'Павлюк Алексей Владимирович', napravlenie: 'Образование',
+            metodNMZK: 'Сопоставление рыночных цен (анализ рынка)',
+            postavshik: 'ООО "Домработница на час"', contacts: '+7(915)111-22-33, e-mail: Нина Петровна Ежова',
+            requirements: 'Членство СРО, лицензия № 123', poryadokOplaty: 'постоплатно',
+            sroki: '1 этап: в период с 20.08.2026 по 11.09.2026\n2 этап: в период с 15.09.2026 по 01.10.2026',
+            cenaVkl: 'монтаж оборудования, ввод в эксплуатацию',
+            adresDostavki: 'Тверская обл, д.Глуски, УСОК "Коненково"',
+            timeS: '09:00', timePo: '15:00', timeDayS: 'понедельник', timeDayPo: 'пятница',
+            fioPoluchatelya: 'ФИО', contactsPoluchatelya: 'Тел.',
+            adresIspolzovaniya: 'совпадает с адресом доставки', nomerRezerva: 'не задано',
+            checkMedical: false, checkObrazovanie: false, checkBudget: false, budgetValue: '',
+            checkOVZ: false, proekt: ''
+        },
+        oboz: {
+            predmet: 'Поставка оргтехники и расходных материалов для офисных нужд',
+            sposob: 'Единственный поставщик',
+            podrazdelenie: 'Кафедра госпитальной терапии имени ак. П.Е. Лукомского',
+            adresDostavki: 'Москва, Островитянова, 1 (склад)',
+            timeS: '09:00', timePo: '15:00', timeDayS: 'понедельник', timeDayPo: 'пятница',
+            adresIspolzovaniya: 'Тверская обл, д.Глуски, УСОК "Коненково"',
+            adresIspolzovaniyaNote: '(Адрес использования совпадает с адресом доставки)',
+            fioPoluchatelya: 'Волдырев Иван Иванович',
+            contactsPoluchatelya: '+7(915)117-79-91',
+            emailPoluchatelya: 'rsmu@rsmu.ru',
+            usedMethod: 'Сопоставление рыночных цен', raschetCeny: '22 460 руб.',
+            nmckRows: [
+                { name: 'ООО "Арнилаб"', value: '32 456 руб.' },
+                { name: 'ООО "Дизам"', value: '221 460 руб.' },
+                { name: 'ООО "Технолаб"', value: '22 480 руб.' }
+            ],
+            nmckItog: '22 460 руб.',
+            bigReason: '1. Закупка осуществляется в соответствии с подпунктом 9 пункта 4.11 главы 4 Положения о закупках для нужд ФГАОУ ВО РНИМУ им. Н.И.Пирогова Минздрава России от 23.03.2021\n2. Закупка обусловлена необходимостью для функционирования Отдела молекулярных технологий НИИ трансляционной медицины. Проведение закупки конкурентным способом не представляется возможным из-за длительных сроков проведения поставки:\n3. Договор планируется заключить с единственным поставщиком по результатам анализа рынка. Ускоренная поставка (с пометкой «срочно») необходима для соблюдения календарного ГЗ 2 00 111 056 «Создание медицинского изделия для диагностики in vitro «Тест-система GADA-BRELISA» для определения аутоантител к глутаматдекарбоксилазе 65 кД в сыворотке крови человека», поскольку:\n1. Экспериментальный цикл разработки методов изготовления и очистки Антигена (АГ) — рекомбинантной человеческой глутаматдекарбоксилазы 65 кД «строго регламентирован по этапам. Все работы ключевых подразделов и многостадийного процесса научно-исследовательской работы (НИР), нацеленные на получение высококачественных антигенов для будущей тест-системы GADA-BRELISA, запланированы на вторую половину года. Любая задержка сдвигает последующие этапы (скринирование, анализ данных, публикации) и ставит под угрозу выполнение годового плана.\n\nДля обоснования необходимости данной закупки послужило следующее: для изготовления антигена для диагностики in vitro необходимо дорогостоящее оборудование, закупка у производителя на отгрузку оборудования не будет размещен до момента заключения договора.\nЗадержка поставки ведет к срыву исполнения гос. задания. Совокупность перечисленных факторов означает, что несвоевременная поставка хотя бы одного из расходных материалов сделает невозможным выполнение запланированных экспериментов в установленные сроки'
+        },
+        /* ===== ОБНОВЛЕНО: принтер 12 492, бумага 9 968, итог 22 460 ===== */
+        tz: [
+            { name: 'Принтер лазерный HP LJ 107a', garant: 'Гарантийный срок годности 12 мес.', kol: 1, ed: 'шт.', summa: '12 492,00', podr: 'Кафедра госпитальной терапии имени ак. П.Е. Лукомского' },
+            { name: 'Бумага офисная, А4, 80 г/м³', garant: 'Срок годности не ограничен', kol: 1, ed: 'коробка', summa: '9 968,00', podr: 'Кафедра госпитальной терапии имени ак. П.Е. Лукомского' }
+        ],
+        tzItogo: '22 460 руб.',
+        nmck: [
+            { postavshik: 'ООО "Арнилаб"', kol: 1, cena: '22 460 руб.', sko: '117', kvar: '0,86', itogo: '22 460 руб.' },
+            { postavshik: 'ООО "Технолаб"', kol: 1, cena: '32 456 руб.', sko: '', kvar: '', itogo: '' }
+        ],
+        nmckItogo: '22 460 руб.',
+        /* ===== ОБНОВЛЕНО: принтер 12 492, бумага 9 968 ===== */
+        pfu: [
+            { name: 'Принтер лазерный HP LJ 107a', kol: 1, ed: 'шт.', cena: '12 492,00', summa: '12 492,00', statya: '[310.02] Закупка компьютеров и оргтехники', kek: '310', proekt: 'Милушкина Ольга Юрьевна - Проректор по учебной работе', napr: 'Образовательные услуги ГЗ' },
+            { name: 'Бумага офисная, А4, 80 г/м³', kol: 1, ed: 'коробка', cena: '9 968,00', summa: '9 968,00', statya: '[346.03] Принадлежности канцелярские бумажные', kek: '346', proekt: 'Милушкина Ольга Юрьевна - Проректор по учебной работе', napr: 'Образовательные услуги ГЗ' }
+        ],
+        pfuItogo: '22 460 руб.'
+    },
+    '1990': {
+        head: 'Заявка на закупку от 18.09.2026 № 1990',
+        reqLeft: {
+            vidDoc: 'Заявка на закупку', object: 'Закупка услуг', predmet: 'Оказание услуг по договору ГПХ',
+            goal: 'Требуется привлечение внешних специалистов для выполнения работ по проекту цифровой трансформации.',
+            sposob: 'Единственный поставщик'
+        },
+        reqRight: {
+            summa: '2 500 000,00', annul: false, podrazdelenie: 'Управление цифровой трансформации',
+            podgotovil: 'Васильев Сергей Викторович (УЦТ, Директор по ЦТ)', otvetstvenny: 'Васильев Сергей Викторович',
+            hranenieForma: 'Электронная', hranenieDelo: '', mol: { fio: '', contacts: '' },
+            return: { fio: 'Васильев Сергей Викторович', reason: '' }
+        },
+        zakupkaReq: [
+            { n: 1, pryamaya: false, predmet: 'Оказание услуг по договору ГПХ', vid: '[226.01] Прочие работы и услуги', chestny: 'для собственных нужд', dataZakl: 'до 20.10.2026 года', dataIsp: 'до 31.12.2026 года', podr: 'Центр цифровой трансформации', proekt: 'Васильев Сергей Викторович - Директор по ЦТ', napr: 'Цифровая трансформация' }
+        ],
+        props: {
+            name: 'Оказание услуг по договору ГПХ', initiator: 'Васильев Сергей Викторович', napravlenie: 'Цифровая трансформация',
+            metodNMZK: 'Сопоставление рыночных цен (анализ рынка)', postavshik: 'ООО "Проф-Сервис"',
+            contacts: '+7(495)123-45-67, e-mail: petrov@prof-service.ru', requirements: 'Лицензия на оказание услуг',
+            poryadokOplaty: 'постоплатно', sroki: 'с 01.10.2026 по 31.12.2026',
+            cenaVkl: 'все налоги и сборы', adresDostavki: 'Москва, ул. Островитянова, 1',
+            timeS: '09:00', timePo: '18:00', timeDayS: 'понедельник', timeDayPo: 'пятница',
+            fioPoluchatelya: 'Иванов И.И.', contactsPoluchatelya: '8(914)845-44-55',
+            adresIspolzovaniya: 'совпадает с адресом доставки', nomerRezerva: '2026-3659',
+            checkMedical: false, checkObrazovanie: false, checkBudget: true, budgetValue: 'Внебюджет',
+            checkOVZ: false, proekt: ''
+        },
+        oboz: {
+            predmet: 'Оказание услуг по договору ГПХ', sposob: 'Единственный поставщик',
+            podrazdelenie: 'Управление цифровой трансформации',
+            adresDostavki: 'Москва, ул. Островитянова, 1',
+            timeS: '09:00', timePo: '18:00', timeDayS: 'понедельник', timeDayPo: 'пятница',
+            adresIspolzovaniya: 'Москва, ул. Островитянова, 1', adresIspolzovaniyaNote: '(Адрес использования совпадает с адресом доставки)',
+            fioPoluchatelya: 'Васильев Сергей Викторович', contactsPoluchatelya: '+7(495)123-45-67', emailPoluchatelya: 'uct@rsmu.ru',
+            usedMethod: 'Сопоставление рыночных цен', raschetCeny: '2 500 000 руб.',
+            nmckRows: [{ name: 'ООО "Проф-Сервис"', value: '2 500 000 руб.' }], nmckItog: '2 500 000 руб.',
+            bigReason: 'Закупка у единственного поставщика обусловлена срочной необходимостью привлечения внешних специалистов для выполнения работ по проекту цифровой трансформации.'
+        },
+        tz: [{ name: 'Услуги по договору ГПХ', garant: 'По акту', kol: 1, ed: 'усл.', summa: '2 500 000,00', podr: 'УЦТ' }],
+        tzItogo: '2 500 000 руб.',
+        nmck: [{ postavshik: 'ООО "Проф-Сервис"', kol: 1, cena: '2 500 000 руб.', sko: '', kvar: '', itogo: '2 500 000 руб.' }],
+        nmckItogo: '2 500 000 руб.',
+        pfu: [{ name: 'Услуги по договору ГПХ', kol: 1, ed: 'усл.', cena: '2 500 000,00', summa: '2 500 000,00', statya: '[226.01] Прочие работы и услуги', kek: '226', proekt: 'Васильев Сергей Викторович - Директор по ЦТ', napr: 'Цифровая трансформация' }],
+        pfuItogo: '2 500 000 руб.'
+    },
+    '1991': {
+        head: 'Заявка на закупку от 18.09.2026 № 1991',
+        reqLeft: {
+            vidDoc: 'Заявка на закупку', object: 'Закупка услуг',
+            predmet: 'Оказание преподавательских услуг',
+            goal: 'Требуется привлечение преподавателей для проведения курса лекций по госпитальной терапии.',
+            sposob: 'Единственный поставщик'
+        },
+        reqRight: {
+            summa: '1 300 000,00', annul: false, podrazdelenie: 'Кафедра госпитальной терапии',
+            podgotovil: 'Милушкина Ольга Юрьевна (Проректор по учебной работе)', otvetstvenny: 'Милушкина Ольга Юрьевна',
+            hranenieForma: 'Электронная', hranenieDelo: '', mol: { fio: '', contacts: '' },
+            return: { fio: 'Милушкина Ольга Юрьевна', reason: '' }
+        },
+        zakupkaReq: [
+            { n: 1, pryamaya: false, predmet: 'Оказание преподавательских услуг', vid: '[226.02] Услуги в области образования', chestny: 'для собственных нужд', dataZakl: 'до 01.10.2026 года', dataIsp: 'до 31.12.2026 года', podr: 'Кафедра госпитальной терапии', proekt: 'Милушкина Ольга Юрьевна - Проректор по учебной работе', napr: 'Образовательные услуги ГЗ' }
+        ],
+        props: {
+            name: 'Оказание преподавательских услуг', initiator: 'Милушкина Ольга Юрьевна', napravlenie: 'Образование',
+            metodNMZK: 'Сопоставление рыночных цен (анализ рынка)', postavshik: 'ООО "Академия+"',
+            contacts: '+7(495)777-88-99, e-mail: info@academy-plus.ru', requirements: 'Опыт преподавания не менее 5 лет',
+            poryadokOplaty: 'постоплатно', sroki: 'с 01.10.2026 по 31.12.2026',
+            cenaVkl: 'все налоги и сборы', adresDostavki: 'Москва, ул. Островитянова, 1',
+            timeS: '10:00', timePo: '17:00', timeDayS: 'понедельник', timeDayPo: 'пятница',
+            fioPoluchatelya: 'Иванов И.И.', contactsPoluchatelya: '8(914)845-44-55',
+            adresIspolzovaniya: 'совпадает с адресом доставки', nomerRezerva: '2026-3660',
+            checkMedical: false, checkObrazovanie: true, checkBudget: false, budgetValue: '',
+            checkOVZ: false, proekt: ''
+        },
+        oboz: {
+            predmet: 'Оказание преподавательских услуг', sposob: 'Единственный поставщик',
+            podrazdelenie: 'Кафедра госпитальной терапии',
+            adresDostavki: 'Москва, ул. Островитянова, 1',
+            timeS: '10:00', timePo: '17:00', timeDayS: 'понедельник', timeDayPo: 'пятница',
+            adresIspolzovaniya: 'Москва, ул. Островитянова, 1', adresIspolzovaniyaNote: '(Адрес использования совпадает с адресом доставки)',
+            fioPoluchatelya: 'Милушкина Ольга Юрьевна', contactsPoluchatelya: '+7(495)777-88-99', emailPoluchatelya: 'education@rsmu.ru',
+            usedMethod: 'Сопоставление рыночных цен', raschetCeny: '1 300 000 руб.',
+            nmckRows: [{ name: 'ООО "Академия+"', value: '1 300 000 руб.' }], nmckItog: '1 300 000 руб.',
+            bigReason: 'Закупка у единственного поставщика обусловлена необходимостью обеспечения непрерывности образовательного процесса по программе госпитальной терапии.'
+        },
+        tz: [{ name: 'Преподавательские услуги', garant: 'По акту', kol: 1, ed: 'усл.', summa: '1 300 000,00', podr: 'Кафедра госпитальной терапии' }],
+        tzItogo: '1 300 000 руб.',
+        nmck: [{ postavshik: 'ООО "Академия+"', kol: 1, cena: '1 300 000 руб.', sko: '', kvar: '', itogo: '1 300 000 руб.' }],
+        nmckItogo: '1 300 000 руб.',
+        pfu: [{ name: 'Преподавательские услуги', kol: 1, ed: 'усл.', cena: '1 300 000,00', summa: '1 300 000,00', statya: '[226.02] Услуги в области образования', kek: '226', proekt: 'Милушкина Ольга Юрьевна - Проректор по учебной работе', napr: 'Образовательные услуги ГЗ' }],
+        pfuItogo: '1 300 000 руб.'
+    },
+    '1992': {
+        head: 'Заявка на запрос цен от 18.09.2026 № 1992',
+        reqLeft: {
+            vidDoc: 'Заявка на запрос цен', object: 'Закупка товаров',
+            predmet: 'Закупка моноблоков',
+            goal: 'Требуется обновление парка моноблоков в учебных аудиториях.',
+            sposob: 'Запрос цен'
+        },
+        reqRight: {
+            summa: '550 000,00', annul: false, podrazdelenie: 'Управление цифровой трансформации',
+            podgotovil: 'Павлюк Алексей Владимирович (УЦТ, Директор по ЦТ)', otvetstvenny: 'Павлюк Алексей Владимирович',
+            hranenieForma: 'Электронная', hranenieDelo: '', mol: { fio: '', contacts: '' },
+            return: { fio: 'Павлюк Алексей Владимирович', reason: '' }
+        },
+        zakupkaReq: [
+            { n: 1, pryamaya: false, predmet: 'Закупка моноблоков', vid: '[310.02] Закупка компьютеров и оргтехники', chestny: 'для собственных нужд', dataZakl: 'до 15.10.2026 года', dataIsp: 'до 30.11.2026 года', podr: 'Управление цифровой трансформации', proekt: 'Павлюк Алексей Владимирович - Директор по ЦТ', napr: 'Цифровая трансформация' }
+        ],
+        props: {
+            name: 'Закупка моноблоков', initiator: 'Павлюк Алексей Владимирович', napravlenie: 'Цифровая трансформация',
+            metodNMZK: 'Метод сопоставимых рыночных цен', postavshik: 'ООО "Технолаб"',
+            contacts: '+7(495)222-33-44, e-mail: sales@technolab.ru', requirements: 'Сертификат соответствия',
+            poryadokOplaty: 'постоплатно', sroki: 'с 15.10.2026 по 30.11.2026',
+            cenaVkl: 'доставка, монтаж', adresDostavki: 'Москва, ул. Островитянова, 1',
+            timeS: '09:00', timePo: '18:00', timeDayS: 'понедельник', timeDayPo: 'пятница',
+            fioPoluchatelya: 'Иванов И.И.', contactsPoluchatelya: '8(914)845-44-55',
+            adresIspolzovaniya: 'совпадает с адресом доставки', nomerRezerva: '2026-3661',
+            checkMedical: false, checkObrazovanie: false, checkBudget: false, budgetValue: '',
+            checkOVZ: false, proekt: ''
+        },
+        oboz: {
+            predmet: 'Закупка моноблоков', sposob: 'Запрос цен',
+            podrazdelenie: 'Управление цифровой трансформации',
+            adresDostavki: 'Москва, ул. Островитянова, 1',
+            timeS: '09:00', timePo: '18:00', timeDayS: 'понедельник', timeDayPo: 'пятница',
+            adresIspolzovaniya: 'Москва, ул. Островитянова, 1', adresIspolzovaniyaNote: '(Адрес использования совпадает с адресом доставки)',
+            fioPoluchatelya: 'Павлюк Алексей Владимирович', contactsPoluchatelya: '+7(495)222-33-44', emailPoluchatelya: 'uct@rsmu.ru',
+            usedMethod: 'Метод сопоставимых рыночных цен', raschetCeny: '550 000 руб.',
+            nmckRows: [{ name: 'ООО "Технолаб"', value: '550 000 руб.' }], nmckItogo: '550 000 руб.',
+            bigReason: 'Закупка осуществляется методом запроса цен в связи с необходимостью обновления парка моноблоков в учебных аудиториях.'
+        },
+        tz: [{ name: 'Моноблок Иволга-505', garant: 'Гарантийный срок годности 24 мес.', kol: 21, ed: 'шт.', summa: '26 194,00', podr: 'УЦТ' }],
+        tzItogo: '550 000 руб.',
+        nmck: [{ postavshik: 'ООО "Технолаб"', kol: 1, cena: '550 000 руб.', sko: '', kvar: '', itogo: '550 000 руб.' }],
+        nmckItogo: '550 000 руб.',
+        pfu: [{ name: 'Моноблок Иволга-505', kol: 21, ed: 'шт.', cena: '26 194,00', summa: '550 000,00', statya: '[310.02] Закупка компьютеров и оргтехники', kek: '310', proekt: 'Павлюк Алексей Владимирович - Директор по ЦТ', napr: 'Цифровая трансформация' }],
+        pfuItogo: '550 000 руб.'
+    }
+};
+
+/* ===================== МОНИТОР ===================== */
+const cfoData = [
+    { id: 'cfo_0706', name: '0706 ВУЗ [РНИМУ]', icon: 'fa-university', plan: null, agreed: null, cash: 3198561.76, remainPlan: null, remainContract: -3198561.76,
+      workers: [{ name: 'Васильев Сергей Викторович', position: 'Директор по ЦТ', plan: null, agreed: null, cash: 1260702.76, remainPlan: null, remainContract: -1260702.76, proposal: 0,
+        zayavki: [
+            { num: '2026-0129', comment: 'ГПХ_Хурматуллин Р.И._3 мес.', plan: null, agreed: null, cash: 373620, remainPlan: null, remainContract: -373620, contract: '(ЗАКРЫТ 05.05.26) Договор от 28.01.2026 № 0129-ЕИ-26ф', delivery: '27.04.2026', contractEnd: '30.06.2026' },
+            { num: '2026-0772', comment: 'ГПХ_Саврасов В.В._3 мес.', plan: null, agreed: null, cash: 62244.76, remainPlan: null, remainContract: -62244.76, contract: '(ЗАКРЫТ 15.06.26) Договор от 10.03.2026 № 0772-ЕИ-26ф', delivery: '09.06.2026', contractEnd: '31.07.2026' }
+        ] }] },
+    { id: 'cfo_dct', name: 'Директор по цифровой трансформации [РНИМУ]', icon: 'fa-user-tie', plan: 16705909.45, agreed: null, cash: 11219478.19, remainPlan: -16705909.45, remainContract: 5486431.26,
+      workers: [{ name: 'Васильев Сергей Викторович', position: 'Директор по ЦТ', plan: 16205909.45, agreed: null, cash: 10719478.19, remainPlan: -16205909.45, remainContract: 5486431.26, proposal: 0,
+        zayavki: [{ num: '2025-3718', comment: 'Обслуживание печатной техники_24 мес_077', plan: 13985346.24, agreed: null, cash: 8498914.98, remainPlan: -13985346.24, remainContract: 5486431.26, contract: 'Договор от 03.10.2025 № 15189438-НК-25-МСП20', delivery: '31.10.2027', contractEnd: '31.12.2027' }] }] }
+];
+const kekData = [
+    { id: 'kek_226', name: '226 · Прочие работы, услуги', icon: 'fa-briefcase', kek: '226', plan: 18188000, agreed: 86386661.61, cash: 70014205.21, remainPlan: -68198661.61, remainContract: 16372456.4,
+      workers: [{ name: 'Подразделения (прочие работы/услуги)', position: '—', plan: 18188000, agreed: 86386661.61, cash: 70014205.21, remainPlan: -68198661.61, remainContract: 16372456.4, proposal: 0,
+        zayavki: [{ num: '2026-0018', comment: 'Расширение 1С Университет_2026', plan: null, agreed: 29052894.76, cash: 22122854.76, remainPlan: -29052894.76, remainContract: 6930040, contract: 'Договор от 18.03.2026 № 15691451-НА-26-МСП20', delivery: '30.12.2026', contractEnd: '31.03.2027' }] }] },
+    { id: 'kek_310', name: '310 · Увеличение стоимости основных средств', icon: 'fa-server', kek: '310', plan: 51061124, agreed: 134499917.15, cash: 72610953.77, remainPlan: -83438793.15, remainContract: 61888963.38,
+      workers: [{ name: 'Подразделения (ОС)', position: '—', plan: 51061124, agreed: 134499917.15, cash: 72610953.77, remainPlan: -83438793.15, remainContract: 61888963.38, proposal: 0,
+        zayavki: [{ num: '2026-0917', comment: 'Сервера с GPU', plan: null, agreed: 50061124, cash: null, remainPlan: -50061124, remainContract: 50061124, contract: 'Договор от 29.05.2026 № 15852155-НА-26-МСП20', delivery: '31.10.2026', contractEnd: '31.12.2026' }] }] }
+];
+
+/* ===================== УТИЛИТЫ ===================== */
+function fmt(v) { if (v === null || v === undefined) return '—'; return Number(v).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmtShort(v) { if (v === null || v === undefined) return '—'; const n = Number(v);
+    if (Math.abs(n) >= 1e9) return (n/1e9).toFixed(2).replace('.', ',') + ' млрд';
+    if (Math.abs(n) >= 1e6) return (n/1e6).toFixed(2).replace('.', ',') + ' млн';
+    if (Math.abs(n) >= 1e3) return (n/1e3).toFixed(2).replace('.', ',') + ' тыс.';
+    return n.toFixed(2).replace('.', ','); }
+function cls(v) { return v === null || v === undefined ? '' : (v < 0 ? 'neg' : (v > 0 ? 'pos' : '')); }
+function indicator(v) { if (v === null || v === undefined) return 'gray'; if (v < 0) return 'red'; if (v > 0) return 'green'; return 'yellow'; }
+function statusLabel(v) { if (v === null || v === undefined) return 'Нет данных'; if (v < 0) return 'Перерасход'; if (v > 0) return 'Резерв'; return 'В норме'; }
+function statusCell(v) { const ind = indicator(v); const l = statusLabel(v); return `<span class="status-cell"><span class="ind ${ind}"></span><span class="status-text ${ind}">${l}</span></span>`; }
+
+/* ===================== НАВИГАЦИЯ ===================== */
+document.querySelectorAll('.lk-nav .nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.lk-nav .nav-item').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.lk-page').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('page-' + btn.dataset.page).classList.add('active');
+    });
+});
+
+/* ===================== МОДАЛКА ЗАКУПКИ ===================== */
+function openZakupkaModal(id) {
+    const z = zakupki[id];
+    if (!z) { alert('Закупка не найдена: ' + id); return; }
+    document.getElementById('zakupkaTitle').textContent = z.head;
+
+    const rl = z.reqLeft, rr = z.reqRight;
+
+    const rekvizityBody = `
+        <div class="zak-head">${z.head.split('№')[0]} <span class="zak-num">№ ${id}</span></div>
+        <div class="req-form">
+            <div class="col">
+                <div class="req-row"><div class="req-lbl">Вид документа</div><div class="req-val"><input class="req-input highlight" value="${rl.vidDoc}" readonly><button class="req-btn">…</button></div></div>
+                <div class="req-row"><div class="req-lbl">Объект закупки (тип продукта):</div><div class="req-val"><input class="req-input" value="${rl.object}" readonly><button class="req-btn">…</button></div></div>
+                <div class="req-row"><div class="req-lbl">Предмет закупки (предмет договора):</div><div class="req-val"><textarea class="req-textarea" readonly>${rl.predmet}</textarea></div></div>
+                <div class="req-row"><div class="req-lbl">Цель закупки: <i class="fas fa-question-circle" style="color:#2c6fc4;"></i></div><div class="req-val"><div class="goal-block"><div class="goal-text">${rl.goal}</div></div></div></div>
+                <div class="req-row"><div class="req-lbl">Желаемый способ закупки</div><div class="req-val"><input class="req-input" value="${rl.sposob}" readonly><button class="req-btn">…</button></div></div>
+            </div>
+            <div class="col">
+                <div class="req-group-title">Реквизиты</div>
+                <div class="req-row"><div class="req-lbl">Сумма</div><div class="req-val"><input class="req-input blue" value="${rr.summa}" readonly><span style="padding-top:6px;color:#7a8290;font-size:12px;">RUB</span></div></div>
+                <div class="req-row"><div class="req-lbl"></div><div class="req-val"><div style="display:flex;align-items:center;gap:8px;"><input type="checkbox" ${rr.annul ? 'checked' : ''} id="annulChk"><label for="annulChk" style="font-size:12.5px;">Заявка аннулирована</label></div></div></div>
+                <div class="req-row"><div class="req-lbl">Подразделение:</div><div class="req-val"><input class="req-input" value="${rr.podrazdelenie}" readonly><button class="req-btn">▾</button><button class="req-btn">📋</button></div></div>
+                <div class="req-row"><div class="req-lbl">Подготовил:</div><div class="req-val"><input class="req-input" value="${rr.podgotovil}" readonly><button class="req-btn">▾</button><button class="req-btn">📋</button></div></div>
+                <div class="req-row"><div class="req-lbl">Ответственный:</div><div class="req-val"><input class="req-input" value="${rr.otvetstvenny}" readonly><button class="req-btn">▾</button><button class="req-btn">📋</button></div></div>
+                <div class="req-group-title">Хранение</div>
+                <div class="req-row"><div class="req-lbl">Форма:</div><div class="req-val"><select class="req-select"><option>${rr.hranenieForma}</option><option>Бумажная</option><option>Смешанная</option></select></div></div>
+                <div class="req-row"><div class="req-lbl">В дело:</div><div class="req-val"><input class="req-input" value="${rr.hranenieDelo}" readonly><button class="req-btn">▾</button><button class="req-btn">📋</button></div></div>
+                <div class="req-group-title">Добавить файл</div>
+                <div class="req-row"><div class="req-lbl"></div><div class="req-val"><button class="zak-dropdown">Добавить… <i class="fas fa-caret-down caret"></i></button></div></div>
+                <div class="req-group-title">Информация о материально-ответственном лице</div>
+                <div class="req-row"><div class="req-lbl">ФИО ответственного сотрудника</div><div class="req-val"><input class="req-input" value="${rr.mol.fio}" placeholder="Не заполнено"><button class="req-btn">…</button></div></div>
+                <div class="req-row"><div class="req-lbl">Контакты (e-mail, телефон)</div><div class="req-val"><input class="req-input" value="${rr.mol.contacts}" placeholder="Не заполнено"><button class="req-btn">…</button></div></div>
+                <div class="return-block">
+                    <div class="req-group-title">Возврат заявки на доработку</div>
+                    <div class="req-row"><div class="req-lbl">ФИО ответственного сотрудника</div><div class="req-val"><input class="req-input" value="${rr.return.fio}" readonly><button class="req-btn">…</button></div></div>
+                    <div class="req-row"><div class="req-lbl">Причина возврата на доработку:</div><div class="req-val"><textarea class="req-textarea" placeholder="Комментарий">${rr.return.reason}</textarea></div></div>
+                    <div class="req-row"><div class="req-lbl"></div><div class="req-val"><button class="zak-dropdown">Вернуть на доработку</button></div></div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const reqRowsZak = z.zakupkaReq.map(r => `
+        <tr>
+            <td class="cell-center">${r.n}</td>
+            <td class="cell-center"><input type="checkbox" class="zak-checkbox" ${r.pryamaya ? 'checked' : ''}></td>
+            <td>${r.predmet}</td>
+            <td class="vid-prod">${r.vid.replace('[', '<span style="color:#3a4a5a;">[</span>').replace(']', ']<span style="color:#3a4a5a;">')} <span class="req-mark">(строго единичный выбор!)</span></td>
+            <td>${r.chestny}</td>
+            <td>${r.dataZakl}</td>
+            <td>${r.dataIsp}</td>
+            <td class="cell-muted">${r.podr}</td>
+            <td>${r.proekt}</td>
+            <td>${r.napr}</td>
+        </tr>
+    `).join('');
+
+    const zakupkiBody = `
+        <table class="zak-req-table">
+            <thead>
+                <tr>
+                    <th style="width:36px;">№</th>
+                    <th style="width:70px;">Прямая</th>
+                    <th style="min-width:220px;">Предмет закупки</th>
+                    <th style="min-width:220px;">Вид продукции <span style="color:#c0392b;font-weight:600;">(строго единичный выбор!)</span></th>
+                    <th style="width:140px;">Честный знак</th>
+                    <th style="width:150px;">Желаемая дата<br>заключения дог-ра</th>
+                    <th style="width:150px;">Желаемая дата<br>исполнения дог-ра</th>
+                    <th style="width:160px;">Подразделение<br>консолидатора</th>
+                    <th style="width:220px;">Проект</th>
+                    <th style="width:160px;">Направление<br>деятельности</th>
+                </tr>
+            </thead>
+            <tbody>${reqRowsZak}</tbody>
+        </table>
+
+        <div class="zak-section-title">Техническое задание</div>
+        <div class="zak-row-actions">
+            <button class="zak-icon-btn" title="Добавить">+</button>
+            <button class="zak-icon-btn orange" title="Вниз">↓</button>
+            <button class="zak-icon-btn orange" title="Вверх">↑</button>
+            <button class="zak-dropdown">Заполнить <i class="fas fa-caret-down caret"></i></button>
+            <span class="zak-link">Скачать шаблон <i class="fas fa-upload"></i></span>
+            <span class="zak-link">Загрузить заявку <i class="fas fa-download"></i></span>
+        </div>
+        <table class="zak-table">
+            <thead><tr>
+                <th style="width:60px;">в свод.</th>
+                <th style="min-width:200px;">Наименование ТРУ</th>
+                <th style="min-width:160px;">Гарантийный срок/<br>срок годности</th>
+                <th style="width:100px;">Кол-во/<br>Неогран.</th>
+                <th style="width:70px;">Ед.изм.</th>
+                <th style="width:110px;">Сумма</th>
+                <th style="min-width:220px;">Подразделение заказчика</th>
+                <th style="width:180px;">Инструкция по заполнению</th>
+                <th style="width:200px;">Прикрепить файлы</th>
+            </tr></thead>
+            <tbody>
+                ${z.tz.map(t => `
+                    <tr>
+                        <td class="cell-center"><input type="checkbox" class="zak-checkbox"></td>
+                        <td>${t.name}</td><td>${t.garant}</td>
+                        <td class="cell-right">${t.kol}</td><td>${t.ed}</td>
+                        <td class="cell-right">${t.summa}</td>
+                        <td class="cell-muted">${t.podr}</td>
+                        <td class="cell-center"><span class="cell-caret">▾</span></td>
+                        <td><span class="file-chip"><span>Прикрепить файл</span> <span class="plus-mini">+</span></span></td>
+                    </tr>`).join('')}
+                <tr class="row-total"><td colspan="9">ИТОГО: ${z.tzItogo}</td></tr>
+            </tbody>
+        </table>
+
+        <div class="zak-section-title">Расчёт НМЦК</div>
+        <div class="zak-row-actions">
+            <button class="zak-icon-btn" title="Добавить">+</button>
+            <button class="zak-icon-btn orange" title="Вниз">↓</button>
+            <button class="zak-icon-btn orange" title="Вверх">↑</button>
+            <button class="zak-dropdown">Заполнить <i class="fas fa-caret-down caret"></i></button>
+            <span class="zak-link">Скачать шаблон <i class="fas fa-upload"></i></span>
+            <span class="zak-link">Загрузить заявку <i class="fas fa-download"></i></span>
+        </div>
+        <table class="zak-table">
+            <thead><tr>
+                <th style="min-width:180px;">Поставщик</th>
+                <th style="width:80px;">Кол-во</th>
+                <th style="width:140px;">Цена единицы КП</th>
+                <th style="width:160px;">Среднее квадратичное<br>отклонение</th>
+                <th style="width:150px;">Коэффициент<br>вариации, %</th>
+                <th style="width:130px;">Итого по КП</th>
+                <th style="width:200px;">Прикрепить файл КП</th>
+            </tr></thead>
+            <tbody>
+                ${z.nmck.map(n => `
+                    <tr>
+                        <td>${n.postavshik}</td>
+                        <td class="cell-right">${n.kol}</td>
+                        <td class="cell-right">${n.cena}</td>
+                        <td class="cell-right">${n.sko || ''}</td>
+                        <td class="cell-right">${n.kvar || ''}</td>
+                        <td class="cell-right">${n.itogo || ''}</td>
+                        <td><span class="file-chip small">Прикрепить файл <span class="plus-mini">+</span></span></td>
+                    </tr>`).join('')}
+                <tr class="row-total"><td colspan="7">Итоговая НМЦК: ${z.nmckItogo}</td></tr>
+            </tbody>
+        </table>
+
+        <div class="zak-section-title">Планово-финансовое управление</div>
+        <div class="zak-row-actions">
+            <button class="zak-icon-btn" title="Добавить">+</button>
+            <button class="zak-icon-btn orange" title="Вниз">↓</button>
+            <button class="zak-icon-btn orange" title="Вверх">↑</button>
+            <button class="zak-dropdown">Заполнить <i class="fas fa-caret-down caret"></i></button>
+            <span class="zak-link">Скачать шаблон <i class="fas fa-upload"></i></span>
+            <span class="zak-link">Загрузить заявку <i class="fas fa-download"></i></span>
+        </div>
+        <table class="zak-table">
+            <thead><tr>
+                <th style="min-width:200px;">Наименование ТРУ</th>
+                <th style="width:70px;">Кол-во</th>
+                <th style="width:80px;">Ед.изм.</th>
+                <th style="width:110px;">Цена</th>
+                <th style="width:120px;">Сумма</th>
+                <th style="min-width:230px;">Статья оборотов</th>
+                <th style="width:70px;">КЭК</th>
+                <th style="min-width:230px;">Проект</th>
+                <th style="width:180px;">Направление деятельности</th>
+            </tr></thead>
+            <tbody>
+                ${z.pfu.map(p => `
+                    <tr>
+                        <td>${p.name}</td>
+                        <td class="cell-right">${p.kol}</td>
+                        <td>${p.ed}</td>
+                        <td class="cell-right">${p.cena}</td>
+                        <td class="cell-right">${p.summa}</td>
+                        <td>${p.statya}</td>
+                        <td class="cell-center"><span class="kek-chip">${p.kek}</span></td>
+                        <td>${p.proekt}</td>
+                        <td>${p.napr}</td>
+                    </tr>`).join('')}
+                <tr class="row-total"><td colspan="9">ИТОГО: ${z.pfuItogo}</td></tr>
+            </tbody>
+        </table>
+    `;
+
+    const p = z.props;
+    const svoystvaBody = `
+        <div class="props-form">
+            <div class="pf-lbl">Наименование закупки</div><div class="pf-val"><input class="req-input" value="${p.name}" readonly></div>
+            <div class="pf-lbl">Инициатор/консолидатор заявки:</div><div class="pf-val"><input class="req-input" value="${p.initiator}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Направление:</div><div class="pf-val"><input class="req-input" value="${p.napravlenie}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl" style="background:#e8eef5;padding:6px 8px;border-radius:3px;">Метод определения НМЦК</div><div class="pf-val"><input class="req-input" value="${p.metodNMZK}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Поставщик:</div><div class="pf-val"><input class="req-input" value="${p.postavshik}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Контакты ОЛ поставщика:</div><div class="pf-val"><input class="req-input" value="${p.contacts}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Особые требования<br>к контрагенту:</div><div class="pf-val"><input class="req-input" value="${p.requirements}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Порядок оплаты:</div><div class="pf-val"><input class="req-input" value="${p.poryadokOplaty}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Сроки (график) поставки:</div><div class="pf-val"><textarea class="req-textarea" readonly>${p.sroki}</textarea></div>
+            <div class="pf-lbl">Цена должна включать:</div><div class="pf-val"><input class="req-input" value="${p.cenaVkl}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Адрес доставки Т/оказания РУ:</div><div class="pf-val"><input class="req-input" value="${p.adresDostavki}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Время доставки ТРУ:</div><div class="pf-val"><div class="time-row"><span style="color:#7a8290;font-size:12px;">с</span><input class="req-input" value="${p.timeDayS}" readonly><input class="req-input" value="${p.timeS}" readonly><span style="color:#7a8290;font-size:12px;">по</span><input class="req-input" value="${p.timeDayPo}" readonly><input class="req-input" value="${p.timePo}" readonly></div></div>
+            <div class="pf-lbl">ФИО получателя ТРУ:</div><div class="pf-val"><input class="req-input" value="${p.fioPoluchatelya}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Контакты получателя ТРУ:</div><div class="pf-val"><input class="req-input" value="${p.contactsPoluchatelya}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Адрес использования<br>предмета закупки:</div><div class="pf-val"><input class="req-input" value="${p.adresIspolzovaniya}" readonly><button class="req-btn">…</button></div>
+            <div class="pf-lbl">Номер резервирования ДС:</div><div class="pf-val"><input class="req-input" value="${p.nomerRezerva}" readonly style="color:#a0a8b5;font-style:italic;"></div>
+            <div class="pf-lbl"></div><div class="pf-val"><div class="check-row"><input type="checkbox" ${p.checkMedical ? 'checked' : ''}><label>Товар приобретается для оказания медицинской помощи</label></div></div>
+            <div class="pf-lbl"></div><div class="pf-val"><div class="check-row"><input type="checkbox" ${p.checkObrazovanie ? 'checked' : ''}><label>Соглашение об обучении</label></div></div>
+            <div class="pf-lbl">Держатель бюджета:</div><div class="pf-val"><div class="check-row"><input type="checkbox" ${p.checkBudget ? 'checked' : ''}><label style="color:#a0a8b5;">Отметить</label></div><input class="req-input" value="${p.budgetValue}" readonly style="margin-left:8px;"><button class="req-btn">▾</button><button class="req-btn">📋</button></div>
+            <div class="pf-lbl"></div><div class="pf-val"><div class="check-row"><input type="checkbox" ${p.checkOVZ ? 'checked' : ''}><label>Инклюзии (ОВЗ)</label></div></div>
+            <div class="pf-lbl">Проект:</div><div class="pf-val"><input class="req-input" value="${p.proekt}" readonly><button class="req-btn">▾</button><button class="req-btn">📋</button></div>
+        </div>
+    `;
+
+    const o = z.oboz;
+    const obosnovanieBody = `
+        <div class="oboz-form">
+            <div class="oboz-two-col">
+                <div>
+                    <div class="oboz-title">Обоснование</div>
+                    <div class="oboz-row"><div class="oboz-lbl">Предмет закупки</div><div class="oboz-val"><textarea class="req-textarea" readonly>${o.predmet}</textarea></div></div>
+                    <div class="oboz-row"><div class="oboz-lbl">Способ закупки</div><div class="oboz-val"><input class="req-input" value="${o.sposob}" readonly></div></div>
+                    <div class="oboz-row"><div class="oboz-lbl">Подразделение заказчика</div><div class="oboz-val"><input class="req-input" value="${o.podrazdelenie}" readonly></div></div>
+                    <div class="oboz-row"><div class="oboz-lbl">Адрес доставки ТРУ</div><div class="oboz-val"><input class="req-input" value="${o.adresDostavki}" readonly></div></div>
+                    <div class="oboz-row"><div class="oboz-lbl">Время доставки ТРУ:</div><div class="oboz-val"><div class="time-row"><span style="color:#7a8290;font-size:12px;">с</span><input class="req-input" value="${o.timeDayS}" readonly style="max-width:120px;"><input class="req-input" value="${o.timeS}" readonly style="max-width:80px;"><span style="color:#7a8290;font-size:12px;">по</span><input class="req-input" value="${o.timeDayPo}" readonly style="max-width:110px;"><input class="req-input" value="${o.timePo}" readonly style="max-width:80px;"></div></div></div>
+                    <div class="oboz-row"><div class="oboz-lbl">Адрес использования ТРУ</div><div class="oboz-val"><textarea class="req-textarea" readonly>${o.adresIspolzovaniya}\n${o.adresIspolzovaniyaNote || ''}</textarea></div></div>
+                    <div class="oboz-row"><div class="oboz-lbl">ФИО получателя ТРУ</div><div class="oboz-val"><input class="req-input" value="${o.fioPoluchatelya}" readonly></div></div>
+                    <div class="oboz-row"><div class="oboz-lbl">Контакты получателя ТРУ</div><div class="oboz-val"><input class="req-input" value="${o.contactsPoluchatelya}" readonly></div></div>
+                    <div class="oboz-row"><div class="oboz-lbl">Адрес электронной почты получателя</div><div class="oboz-val"><input class="req-input" value="${o.emailPoluchatelya}" readonly></div></div>
+                </div>
+                <div>
+                    <div class="oboz-title">Обоснование цены контракта</div>
+                    <div class="oboz-row"><div class="oboz-lbl">Используемый метод определения цены договора (на выбор)</div><div class="oboz-val"><input class="req-input" value="${o.usedMethod}" readonly style="max-width:240px;"></div></div>
+                    <table class="nmck-mini-table" style="margin-bottom:12px;">
+                        ${o.nmckRows.map(r => `<tr><td>${r.name}</td><td>${r.value}</td></tr>`).join('')}
+                    </table>
+                    <div class="oboz-row"><div class="oboz-lbl">Расчет цены договора</div><div class="oboz-val"><input class="req-input" value="${o.raschetCeny}" readonly style="max-width:200px;font-weight:700;background:#fdf6d0;"></div></div>
+                </div>
+            </div>
+            <div class="big-reason-title" style="margin-top:20px;">Обоснование невозможности и нецелесообразности использования иных способов определения поставщика (подрядчика, исполнителя)</div>
+            <div class="big-reason">${o.bigReason}</div>
+        </div>
+    `;
+
+    document.getElementById('zakupkaBody').innerHTML = `
+        <div class="zak-tabs" id="zakTabs">
+            <button class="zak-tab active" data-tab="rekvizity">Реквизиты</button>
+            <button class="zak-tab" data-tab="files">Файлы</button>
+            <button class="zak-tab" data-tab="zakupki">Закупки</button>
+            <button class="zak-tab" data-tab="svoystva">Свойства</button>
+            <button class="zak-tab" data-tab="obosnovanie">Обоснование</button>
+            <button class="zak-tab" data-tab="obrabotka">Обработка</button>
+            <button class="zak-tab" data-tab="svyazi">Связи</button>
+            <button class="zak-tab" data-tab="ep">ЭП</button>
+            <button class="zak-tab" data-tab="dostup">Доступ</button>
+        </div>
+
+        <div class="zak-tab-panel" data-tab="rekvizity">${rekvizityBody}</div>
+        <div class="zak-tab-panel" data-tab="zakupki" style="display:none;">${zakupkiBody}</div>
+        <div class="zak-tab-panel" data-tab="svoystva" style="display:none;">${svoystvaBody}</div>
+        <div class="zak-tab-panel" data-tab="obosnovanie" style="display:none;">${obosnovanieBody}</div>
+        <div class="zak-tab-panel" data-tab="files" style="display:none;"><div class="placeholder"><i class="fas fa-folder-open"></i> Раздел «Файлы» в разработке</div></div>
+        <div class="zak-tab-panel" data-tab="obrabotka" style="display:none;"><div class="placeholder"><i class="fas fa-cogs"></i> Раздел «Обработка» в разработке</div></div>
+        <div class="zak-tab-panel" data-tab="svyazi" style="display:none;"><div class="placeholder"><i class="fas fa-link"></i> Раздел «Связи» в разработке</div></div>
+        <div class="zak-tab-panel" data-tab="ep" style="display:none;"><div class="placeholder"><i class="fas fa-signature"></i> Раздел «ЭП» в разработке</div></div>
+        <div class="zak-tab-panel" data-tab="dostup" style="display:none;"><div class="placeholder"><i class="fas fa-users-cog"></i> Раздел «Доступ» в разработке</div></div>
+    `;
+
+    document.querySelectorAll('#zakTabs .zak-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#zakTabs .zak-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const target = tab.dataset.tab;
+            document.querySelectorAll('#zakupkaBody .zak-tab-panel').forEach(p => {
+                p.style.display = p.dataset.tab === target ? '' : 'none';
+            });
+        });
+    });
+
+    document.getElementById('zakupkaOverlay').classList.add('open');
+}
+function closeZakupkaModal() { document.getElementById('zakupkaOverlay').classList.remove('open'); }
+
+/* ===================== МОДАЛКА ДОГОВОРА ===================== */
+function openDogovorModal(num) {
+    const d = dogovory[num];
+    if (!d) { alert('Договор не найден: ' + num); return; }
+    document.getElementById('dogovorTitle').textContent = d.title;
+    const specRows = d.spec.map(s => `
+        <tr><td>${s.name}</td><td style="text-align:center;">${s.kol}</td><td>${s.ed}</td>
+        <td class="cell-right mono" style="text-align:right;">${s.cena}</td>
+        <td class="cell-right mono" style="text-align:right;">${s.summa}</td>
+        <td>${s.adres}</td></tr>`).join('');
+    document.getElementById('dogovorBody').innerHTML = `
+        <div class="form-section-title"><span>Общие сведения о договоре</span><span class="badge ${d.status}">${d.statusText}</span></div>
+        <table class="form-table">
+            <tr><td class="fl">Предмет договора</td><td class="fv" colspan="3">${d.predmet}</td></tr>
+            <tr><td class="fl">№ и дата договора</td><td class="fv mono">${d.num}</td><td class="fl">Контрагент</td><td class="fv">${d.kontragent}</td></tr>
+            <tr><td class="fl">Срок исполнения с</td><td class="fv mono">${d.srokS}</td><td class="fl">Срок исполнения по</td><td class="fv mono">${d.srokPo}</td></tr>
+            <tr><td class="fl">Сумма договора</td><td class="fv mono">${d.summa}</td><td class="fl">Порядок оплаты</td><td class="fv">${d.poryadok}</td></tr>
+            <tr><td class="fl">Сроки поставки</td><td class="fv">${d.sroki}</td><td class="fl">Адрес(а) поставки</td><td class="fv">${d.adresa}</td></tr>
+            <tr><td class="fl">Контактное лицо поставщика</td><td class="fv" colspan="3">${d.kontaktPost}</td></tr>
+            <tr><td class="fl">Контактное лицо получателя</td><td class="fv" colspan="3">${d.kontaktPol}</td></tr>
+        </table>
+        <div class="form-section-title">Спецификация</div>
+        <table class="form-table">
+            <thead><tr>
+                <th style="background:#f5f6f8;text-align:left;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);">Предмет закупки</th>
+                <th style="background:#f5f6f8;text-align:center;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:70px;">Кол-во</th>
+                <th style="background:#f5f6f8;text-align:left;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:60px;">Ед.</th>
+                <th style="background:#f5f6f8;text-align:right;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:120px;">Цена</th>
+                <th style="background:#f5f6f8;text-align:right;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:130px;">Сумма</th>
+                <th style="background:#f5f6f8;text-align:left;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);">Адреса поставки</th>
+            </tr></thead>
+            <tbody>${specRows}</tbody>
+        </table>
+        <div class="form-section-title">Исполнение договора</div>
+        <div style="padding:8px 0;"><a class="contract-link" onclick="closeDogovorModal(); openGrafikModal('${d.num}');"><i class="fas fa-money-bill-wave" style="color:#2c6fc4;"></i> Открыть график платежей по договору</a></div>
+    `;
+    document.getElementById('dogovorOverlay').classList.add('open');
+}
+function closeDogovorModal() { document.getElementById('dogovorOverlay').classList.remove('open'); }
+
+/* ===================== МОДАЛКА ГРАФИКА ===================== */
+function openGrafikModal(num) {
+    const g = grafiki[num];
+    if (!g) { alert('График платежей не найден: ' + num); return; }
+    document.getElementById('grafikTitle').textContent = g.title;
+    const rows = g.rows.map(r => `
+        <tr><td style="text-align:center;">${r.n}</td><td class="mono">${r.date}</td><td>${r.osnov}</td>
+        <td class="mono" style="text-align:right;">${r.summa}</td>
+        <td><span class="badge ${r.status}">${r.statusText}</span></td>
+        <td class="mono" style="text-align:right;">${r.oplacheno}</td>
+        <td class="mono" style="text-align:right;">${r.ostatok}</td></tr>`).join('');
+    document.getElementById('grafikBody').innerHTML = `
+        <div class="form-section-title">Платежи по договору</div>
+        <table class="form-table">
+            <thead><tr>
+                <th style="background:#f5f6f8;text-align:center;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:50px;">№</th>
+                <th style="background:#f5f6f8;text-align:left;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:120px;">Дата</th>
+                <th style="background:#f5f6f8;text-align:left;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);">Основание</th>
+                <th style="background:#f5f6f8;text-align:right;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:140px;">Сумма</th>
+                <th style="background:#f5f6f8;text-align:left;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:120px;">Статус</th>
+                <th style="background:#f5f6f8;text-align:right;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:130px;">Оплачено</th>
+                <th style="background:#f5f6f8;text-align:right;padding:8px 12px;font-size:12px;color:#3a4a5a;border-bottom:1px solid var(--border);width:130px;">Остаток</th>
+            </tr></thead>
+            <tbody>${rows}</tbody>
+        </table>
+        <div style="padding:14px 12px;background:#fafbfd;border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;font-size:12.5px;font-weight:600;text-align:center;color:#1a3a5c;">${g.itog}</div>
+    `;
+    document.getElementById('grafikOverlay').classList.add('open');
+}
+function closeGrafikModal() { document.getElementById('grafikOverlay').classList.remove('open'); }
+
+/* ===================== KPI-ПАНЕЛЬ ===================== */
+function renderKpiPanel() {
+    const panel = document.getElementById('kpiPanel');
+    const items = [
+        { label: 'План (всего)', value: fileTotals.plan, cls: '' },
+        { label: 'Согласовано', value: fileTotals.agreed, cls: '' },
+        { label: 'Касса', value: fileTotals.cash, cls: '' },
+        { label: 'Остаток от плана', value: fileTotals.remainPlan, cls: cls(fileTotals.remainPlan) },
+        { label: 'Остаток от договора', value: fileTotals.remainContract, cls: cls(fileTotals.remainContract) }
+    ];
+    panel.innerHTML = items.map(it => `
+        <div class="kpi"><div class="lbl">${it.label}</div><div class="val ${it.cls}">${fmt(it.value)} ₽</div><div class="sub">${fmtShort(it.value)}</div></div>
+    `).join('');
+}
+
+function renderChart() {
+    const wrap = document.getElementById('chartMain');
+    const maxVal = Math.max(Math.abs(fileTotals.plan), Math.abs(fileTotals.agreed), Math.abs(fileTotals.cash), Math.abs(fileTotals.remainPlan), Math.abs(fileTotals.remainContract));
+    const items = [
+        { label: 'План', value: fileTotals.plan, css: 'plan', cls: '' },
+        { label: 'Согласовано', value: fileTotals.agreed, css: 'agreed', cls: '' },
+        { label: 'Касса', value: fileTotals.cash, css: 'cash', cls: '' },
+        { label: 'Остаток от плана', value: fileTotals.remainPlan, css: 'remain-plan', cls: cls(fileTotals.remainPlan) },
+        { label: 'Остаток от договора', value: fileTotals.remainContract, css: 'remain-contract', cls: cls(fileTotals.remainContract) }
+    ];
+    wrap.innerHTML = items.map(it => {
+        const w = maxVal > 0 ? Math.max(1, Math.round(Math.abs(it.value) / maxVal * 100)) : 0;
+        return `<div class="chart-row"><div class="chart-label">${it.label}</div><div class="chart-bar-wrap"><div class="chart-bar ${it.css}" style="width:${w}%"></div></div><div class="chart-value ${it.cls}">${fmt(it.value)} ₽</div></div>`;
+    }).join('');
+}
+
+/* ===================== МОНИТОР ===================== */
+let currentGrouping = 'cfo';
+let wCounter = 0, zCounter = 0;
+function getCurrentData() { return currentGrouping === 'cfo' ? cfoData : kekData; }
+
+function renderTable() {
+    const tbody = document.getElementById('kpiBody');
+    tbody.innerHTML = '';
+    wCounter = 0; zCounter = 0;
+    const data = getCurrentData();
+    data.forEach(group => {
+        const trG = document.createElement('tr');
+        trG.className = 'group-row'; trG.dataset.group = group.id;
+        const badge = (currentGrouping === 'kek' && group.kek) ? `<span style="background:#fff;border:1px solid #d9dde3;border-radius:3px;padding:1px 6px;font-size:10.5px;font-weight:600;color:#2c6fc4;margin-left:8px;">КЭК ${group.kek}</span>` : '';
+        trG.innerHTML = `
+            <td><button class="toggle-btn group-btn" onclick="toggleGroup('${group.id}')">−</button>
+                <i class="fas ${group.icon || 'fa-folder'}" style="color:#2c6fc4;margin-right:6px;"></i>
+                <span>${group.name}</span>${badge}</td>
+            <td class="num plan-cell">${fmt(group.plan)}</td><td class="num agreed-cell">${fmt(group.agreed)}</td>
+            <td class="num">${fmt(group.cash)}</td>
+            <td class="num ${cls(group.remainPlan)}">${fmt(group.remainPlan)}</td>
+            <td class="num ${cls(group.remainContract)}">${fmt(group.remainContract)}</td>
+            <td class="center">${statusCell(group.remainPlan)}</td><td></td>`;
+        tbody.appendChild(trG);
+
+        group.workers.forEach((w, wi) => {
+            wCounter++;
+            const wid = `${group.id}-w${wi}`;
+            const trW = document.createElement('tr');
+            trW.className = 'worker-row'; trW.dataset.parent = group.id; trW.dataset.worker = wid;
+            trW.innerHTML = `
+                <td style="padding-left:24px;">
+                    <button class="toggle-btn" onclick="toggleWorker('${wid}')">−</button>
+                    <a class="cell-link" onclick="toggleWorker('${wid}')" style="text-decoration:none;font-weight:600;color:#1a3a5c;">${w.name}</a>
+                    ${w.position && w.position !== '—' ? `<span style="color:#7a8290;font-size:11px;margin-left:6px;">— ${w.position}</span>` : ''}
+                </td>
+                <td class="num plan-cell">${fmt(w.plan)}</td><td class="num agreed-cell">${fmt(w.agreed)}</td>
+                <td class="num">${fmt(w.cash)}</td>
+                <td class="num ${cls(w.remainPlan)}">${fmt(w.remainPlan)}</td>
+                <td class="num ${cls(w.remainContract)}">${fmt(w.remainContract)}</td>
+                <td class="center">${statusCell(w.remainPlan)}</td>
+                <td style="text-align:center;"><button class="act-btn" onclick="openProposalDialog('${group.id}', ${wi})">Предложить</button>${w.proposal ? `<span class="prop-tag">${w.proposal > 0 ? '+' : ''}${fmt(w.proposal)}</span>` : ''}</td>`;
+            tbody.appendChild(trW);
+            (w.zayavki || []).forEach((z, zi) => {
+                zCounter++;
+                const trZ = document.createElement('tr');
+                trZ.className = 'zayavka-row'; trZ.dataset.parent = wid;
+                trZ.ondblclick = () => openZayavkaCard(group.id, wi, zi);
+                trZ.innerHTML = `
+                    <td class="indent"><i class="fas fa-file-invoice" style="color:#b0bec5;margin-right:6px;font-size:10px;"></i>
+                        <span style="color:#1e6fd6;font-weight:600;">${z.num}</span>
+                        <span style="color:#5a6473;margin-left:6px;">${z.comment}</span></td>
+                    <td class="num">${fmt(z.plan)}</td><td class="num">${fmt(z.agreed)}</td>
+                    <td class="num">${fmt(z.cash)}</td>
+                    <td class="num ${cls(z.remainPlan)}">${fmt(z.remainPlan)}</td>
+                    <td class="num ${cls(z.remainContract)}">${fmt(z.remainContract)}</td>
+                    <td class="center">${statusCell(z.remainPlan)}</td><td></td>`;
+                tbody.appendChild(trZ);
+            });
+        });
+
+        const trS = document.createElement('tr');
+        trS.className = 'subtotal-row'; trS.dataset.parent = group.id;
+        trS.innerHTML = `
+            <td style="padding-left:32px;"><i class="fas fa-calculator" style="color:#b8860b;margin-right:6px;"></i> Итого: ${group.name}</td>
+            <td class="num">${fmt(group.plan)}</td><td class="num">${fmt(group.agreed)}</td><td class="num">${fmt(group.cash)}</td>
+            <td class="num ${cls(group.remainPlan)}">${fmt(group.remainPlan)}</td>
+            <td class="num ${cls(group.remainContract)}">${fmt(group.remainContract)}</td>
+            <td class="center">${statusCell(group.remainPlan)}</td><td></td>`;
+        tbody.appendChild(trS);
+    });
+
+    const trGrand = document.createElement('tr');
+    trGrand.className = 'grand-row';
+    trGrand.innerHTML = `
+        <td style="padding-left:16px;"><i class="fas fa-sigma" style="margin-right:6px;"></i> ВСЕГО ПО УФГУ</td>
+        <td class="num">${fmt(fileTotals.plan)}</td><td class="num">${fmt(fileTotals.agreed)}</td><td class="num">${fmt(fileTotals.cash)}</td>
+        <td class="num ${cls(fileTotals.remainPlan)}">${fmt(fileTotals.remainPlan)}</td>
+        <td class="num ${cls(fileTotals.remainContract)}">${fmt(fileTotals.remainContract)}</td>
+        <td class="center">${statusCell(fileTotals.remainPlan)}</td><td></td>`;
+    tbody.appendChild(trGrand);
+    document.getElementById('cntWorkers').textContent = wCounter;
+    document.getElementById('cntZayavok').textContent = zCounter;
+}
+
+function toggleGroup(gid) {
+    document.querySelectorAll(`tr[data-parent="${gid}"]`).forEach(el => { el.style.display = el.style.display === 'none' ? '' : 'none'; });
+    const btn = document.querySelector(`tr[data-group="${gid}"] .toggle-btn`);
+    if (btn) { const hidden = Array.from(document.querySelectorAll(`tr[data-parent="${gid}"]`)).some(el => el.style.display === 'none'); btn.textContent = hidden ? '+' : '−'; }
+}
+function toggleWorker(wid) {
+    document.querySelectorAll(`tr[data-parent="${wid}"]`).forEach(el => { el.style.display = el.style.display === 'none' ? '' : 'none'; });
+    const btn = document.querySelector(`tr[data-worker="${wid}"] .toggle-btn`);
+    if (btn) { const hidden = Array.from(document.querySelectorAll(`tr[data-parent="${wid}"]`)).some(el => el.style.display === 'none'); btn.textContent = hidden ? '+' : '−'; }
+}
+
+function setGrouping(mode) {
+    currentGrouping = mode;
+    document.getElementById('grpCfoBtn').classList.toggle('active', mode === 'cfo');
+    document.getElementById('grpKekBtn').classList.toggle('active', mode === 'kek');
+    document.getElementById('thName').textContent = mode === 'cfo' ? 'Наименование / ЦФО / Сотрудник / Заявка' : 'КЭК / Сотрудник / Заявка';
+    renderTable();
+}
+
+function applySearch() {
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (!q) { document.querySelectorAll('.monitor-table tbody tr').forEach(el => el.style.display = ''); return; }
+    document.querySelectorAll('.monitor-table tbody tr').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.monitor-table tbody tr').forEach(el => { if ((el.textContent || '').toLowerCase().includes(q)) el.style.display = ''; });
+}
+function clearSearch() { document.getElementById('searchInput').value = ''; document.querySelectorAll('.monitor-table tbody tr').forEach(el => el.style.display = ''); }
+
+function exportCSV() {
+    const rows = [['Группировка','Уровень','Наименование','План','Согласовано','Касса','Остаток от плана','Остаток от договора','Статус']];
+    getCurrentData().forEach(group => {
+        rows.push([currentGrouping.toUpperCase(),'Группа',group.name,group.plan??'',group.agreed??'',group.cash??'',group.remainPlan??'',group.remainContract??'',statusLabel(group.remainPlan)]);
+        group.workers.forEach(w => {
+            rows.push(['','Сотрудник',w.name,w.plan??'',w.agreed??'',w.cash??'',w.remainPlan??'',w.remainContract??'',statusLabel(w.remainPlan)]);
+            (w.zayavki||[]).forEach(z => { rows.push(['','Заявка',`${z.num} — ${z.comment}`,z.plan??'',z.agreed??'',z.cash??'',z.remainPlan??'',z.remainContract??'',statusLabel(z.remainPlan)]); });
+        });
+    });
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(';')).join('\n');
+    const blob = new Blob(['\uFEFF'+csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = `limity_${currentGrouping}_${new Date().toISOString().slice(0,10)}.csv`; a.click();
+}
+
+function openProposalDialog(gid, wi) {
+    const group = getCurrentData().find(g => g.id === gid);
+    if (!group) return;
+    const w = group.workers[wi];
+    const cur = w.plan || w.agreed || w.cash || 0;
+    const nv = prompt(`Новый лимит для ${w.name}\nТекущий: ${fmt(cur)} ₽`, Math.round(cur));
+    if (nv === null) return;
+    const num = Number(nv.replace(/\s/g,'').replace(',','.'));
+    if (isNaN(num) || num < 0) { alert('Некорректное значение.'); return; }
+    if (num === cur) { alert('Лимит не изменён.'); return; }
+    w.proposal = num - cur; renderTable();
+}
+document.getElementById('applyProposalsBtn').addEventListener('click', () => {
+    let applied = 0;
+    [...cfoData, ...kekData].forEach(group => {
+        group.workers.forEach(w => {
+            if (w.proposal) {
+                if (w.plan !== null && w.plan !== undefined) w.plan += w.proposal;
+                else if (w.agreed !== null && w.agreed !== undefined) w.agreed += w.proposal;
+                else if (w.cash !== null && w.cash !== undefined) w.cash += w.proposal;
+                w.proposal = 0; applied++;
+            }
+        });
+    });
+    alert(applied ? `Применено предложений: ${applied}` : 'Нет активных предложений.');
+    renderTable();
+});
+document.getElementById('load1cBtn').addEventListener('click', () => alert('Выгрузка из 1С:УФГУ — данные актуальны на 25.09.2026.'));
+
+function openZayavkaCard(gid, wi, zi) {
+    const group = cfoData.find(g => g.id === gid); if (!group) return;
+    const w = group.workers[wi]; const z = w.zayavki[zi];
+    document.getElementById('modalCrumbs').textContent = `Заявка № ${z.num}`;
+    document.getElementById('modalBody').innerHTML = `
+        <div class="form-section-title">Общие сведения</div>
+        <table class="form-table">
+            <tr><td class="fl">Номер заявки</td><td class="fv mono">${z.num}</td><td class="fl">Статус</td><td class="fv">${statusCell(z.remainPlan)}</td></tr>
+            <tr><td class="fl">ЦФО / Группа</td><td class="fv" colspan="3">${group.name}</td></tr>
+            <tr><td class="fl">Заказчик</td><td class="fv" colspan="3">${w.name}</td></tr>
+            <tr><td class="fl">Комментарий</td><td class="fv" colspan="3">${z.comment}</td></tr>
+        </table>
+        <div class="form-section-title">Договор</div>
+        <table class="form-table">
+            <tr><td class="fl">Договор</td><td class="fv" colspan="3">${z.contract || '—'}</td></tr>
+            <tr><td class="fl">Срок поставки</td><td class="fv mono">${z.delivery || '—'}</td><td class="fl">Срок окончания</td><td class="fv mono">${z.contractEnd || '—'}</td></tr>
+        </table>
+        <div class="form-section-title">Финансовые показатели</div>
+        <table class="form-table">
+            <tr><td class="fl">План, ₽</td><td class="fv mono">${fmt(z.plan)}</td><td class="fl">Согласовано, ₽</td><td class="fv mono">${fmt(z.agreed)}</td></tr>
+            <tr><td class="fl">Касса, ₽</td><td class="fv mono">${fmt(z.cash)}</td><td class="fl">Остаток от плана</td><td class="fv mono ${cls(z.remainPlan)}">${fmt(z.remainPlan)}</td></tr>
+            <tr><td class="fl">Остаток от договора</td><td class="fv mono ${cls(z.remainContract)}">${fmt(z.remainContract)}</td><td class="fl">Сумма по договору</td><td class="fv mono">${fmt(z.plan || z.agreed || z.cash || 0)}</td></tr>
+        </table>`;
+    document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeDogovorModal(); closeGrafikModal(); closeZakupkaModal(); } });
+
+function init() { renderKpiPanel(); renderChart(); renderTable(); }
+init();
+</script>
+
+</body>
+</html>
