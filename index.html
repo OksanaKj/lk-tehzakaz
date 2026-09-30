@@ -281,6 +281,55 @@
 
         .statusbar { padding: 8px 28px; background: #fff; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); display: flex; gap: 18px; flex-wrap: wrap; position: fixed; bottom: 0; left: 0; right: 0; }
         .lk-content { padding-bottom: 60px; }
+
+        /* ============ ДОБАВЛЕНО: СЛУЖЕБНЫЕ ЗАПИСКИ ============ */
+        .modal-footer { display: flex; gap: 8px; padding: 12px 22px; border-top: 1px solid var(--border); justify-content: flex-end; }
+        .mbtn { padding: 7px 16px; background: #fff; border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; cursor: pointer; color: var(--text); font-family: inherit; transition: 0.15s; }
+        .mbtn:hover { background: #f5f8fc; border-color: #b5c9dc; }
+        .mbtn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .mbtn.primary:hover { background: #1e5aa3; border-color: #1e5aa3; }
+
+        .memo-actions { display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 0 4px; }
+        .memo-btn { padding: 8px 14px; border: 1px solid var(--border); background: #fff; border-radius: 6px; font-size: 12.5px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; color: var(--text); font-family: inherit; transition: 0.15s; }
+        .memo-btn:hover { background: #f5f8fc; border-color: #b5c9dc; }
+        .memo-btn i { color: var(--primary); font-size: 12px; }
+        .memo-btn.danger { color: var(--red-t); }
+        .memo-btn.danger i { color: var(--red-t); }
+        .memo-btn.danger:hover { background: #fef5f5; border-color: #e6b3b3; }
+
+        .memo-form { display: grid; grid-template-columns: minmax(180px, 220px) 1fr; gap: 10px 16px; background: #fff; padding: 4px 0; font-size: 12.5px; }
+        .memo-form .mf-lbl { font-size: 12px; color: var(--text-muted); padding-top: 7px; padding-right: 8px; font-weight: 600; }
+        .memo-form .mf-val { display: flex; gap: 4px; align-items: stretch; }
+        .memo-form .mf-input, .memo-form .mf-textarea { flex: 1; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 12.5px; font-family: inherit; background: #fff; color: var(--text); min-height: 32px; }
+        .memo-form .mf-textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+        .memo-form .mf-input[readonly] { background: #f5f6f8; color: #5a6473; }
+        .memo-form .mf-input.highlight { background: #fdf6d0; border-color: #e0c060; font-weight: 600; }
+        .memo-form .mf-input.blue { background: #e1ecfa; border-color: #a8c8e8; color: #1a3a5c; font-weight: 600; }
+
+        .memo-attach-wrap { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .memo-attach-list { display: flex; flex-direction: column; gap: 6px; }
+        .memo-attach-row { display: flex; gap: 8px; align-items: center; padding: 6px 10px; background: #fafbfd; border: 1px solid var(--border-light); border-radius: 4px; font-size: 12px; }
+        .memo-attach-row .fi { color: #3aa76d; font-size: 12px; }
+        .memo-attach-row .fname { flex: 1; padding: 4px 6px; border: 1px solid transparent; background: transparent; font-size: 12px; font-family: inherit; color: var(--text); border-radius: 3px; }
+        .memo-attach-row .fname:focus { background: #fff; border-color: var(--border); outline: none; }
+        .memo-attach-row .fdel { color: var(--red-t); cursor: pointer; background: none; border: none; font-size: 13px; padding: 2px 8px; border-radius: 3px; }
+        .memo-attach-row .fdel:hover { background: #fef0f0; }
+        .memo-add-attach { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #fff; border: 1px dashed var(--border); border-radius: 4px; font-size: 12px; color: #3aa76d; cursor: pointer; font-weight: 600; align-self: flex-start; font-family: inherit; }
+        .memo-add-attach:hover { background: #f3fbf6; border-color: #3aa76d; }
+
+        .memo-preview { background: #fff; border: 1px solid var(--border); padding: 28px 32px; font-size: 13px; line-height: 1.55; color: #1a1a1a; font-family: 'Times New Roman', Times, serif; }
+        .memo-preview .mp-org { text-align: center; font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+        .memo-preview .mp-org-sub { text-align: center; font-size: 12.5px; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 12px; color: #5a6473; }
+        .memo-preview .mp-title { text-align: center; font-weight: 700; margin: 22px 0 18px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.4px; }
+        .memo-preview .mp-meta { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin-bottom: 18px; font-size: 12.5px; }
+        .memo-preview .mp-meta .mk { color: #5a6473; }
+        .memo-preview .mp-meta .mv { font-weight: 600; }
+        .memo-preview .mp-body { text-indent: 28px; margin-bottom: 10px; white-space: pre-line; text-align: justify; }
+        .memo-preview .mp-attach-title { margin-top: 20px; font-weight: 700; }
+        .memo-preview .mp-attach-item { margin-left: 28px; font-size: 12.5px; margin-bottom: 3px; }
+        .memo-preview .mp-sign { margin-top: 40px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: end; }
+        .memo-preview .mp-sign .sig-line { border-bottom: 1px solid #1a1a1a; min-width: 160px; display: inline-block; margin: 0 8px; }
+        .memo-preview .mp-sign .sig-name { font-size: 12.5px; }
     </style>
 </head>
 <body>
@@ -452,6 +501,22 @@
     </div>
 </div>
 
+<!-- ДОБАВЛЕНО: модальное окно служебной записки -->
+<div class="modal-overlay" id="memoOverlay" onclick="if(event.target===this) closeMemoModal()">
+    <div class="modal-form wide">
+        <div class="modal-title">
+            <h3 id="memoTitle">Служебная записка</h3>
+            <button class="mt-close" onclick="closeMemoModal()" title="Закрыть">✕</button>
+        </div>
+        <div class="modal-body" id="memoBody"></div>
+        <div class="modal-footer">
+            <button class="mbtn" onclick="closeMemoModal()">Закрыть</button>
+            <button class="mbtn" onclick="printMemo()"><i class="fas fa-print" style="margin-right:6px;"></i>Печать</button>
+            <button class="mbtn primary" onclick="saveMemo()"><i class="fas fa-file-download" style="margin-right:6px;"></i>Сформировать</button>
+        </div>
+    </div>
+</div>
+
 <div class="statusbar">
     <span><i class="fas fa-database" style="color:#a0a8b5;"></i> Источник: 1С:УФГУ · ПФХД 2026</span>
     <span><i class="fas fa-clock" style="color:#a0a8b5;"></i> Обновлено: 25.09.2026</span>
@@ -584,7 +649,6 @@ const zakupki = {
             nmckItog: '22 460 руб.',
             bigReason: '1. Закупка осуществляется в соответствии с подпунктом 9 пункта 4.11 главы 4 Положения о закупках для нужд ФГАОУ ВО РНИМУ им. Н.И.Пирогова Минздрава России от 23.03.2021\n2. Закупка обусловлена необходимостью для функционирования Отдела молекулярных технологий НИИ трансляционной медицины. Проведение закупки конкурентным способом не представляется возможным из-за длительных сроков проведения поставки:\n3. Договор планируется заключить с единственным поставщиком по результатам анализа рынка. Ускоренная поставка (с пометкой «срочно») необходима для соблюдения календарного ГЗ 2 00 111 056 «Создание медицинского изделия для диагностики in vitro «Тест-система GADA-BRELISA» для определения аутоантител к глутаматдекарбоксилазе 65 кД в сыворотке крови человека», поскольку:\n1. Экспериментальный цикл разработки методов изготовления и очистки Антигена (АГ) — рекомбинантной человеческой глутаматдекарбоксилазы 65 кД «строго регламентирован по этапам. Все работы ключевых подразделов и многостадийного процесса научно-исследовательской работы (НИР), нацеленные на получение высококачественных антигенов для будущей тест-системы GADA-BRELISA, запланированы на вторую половину года. Любая задержка сдвигает последующие этапы (скринирование, анализ данных, публикации) и ставит под угрозу выполнение годового плана.\n\nДля обоснования необходимости данной закупки послужило следующее: для изготовления антигена для диагностики in vitro необходимо дорогостоящее оборудование, закупка у производителя на отгрузку оборудования не будет размещен до момента заключения договора.\nЗадержка поставки ведет к срыву исполнения гос. задания. Совокупность перечисленных факторов означает, что несвоевременная поставка хотя бы одного из расходных материалов сделает невозможным выполнение запланированных экспериментов в установленные сроки'
         },
-        /* ===== ОБНОВЛЕНО: принтер 12 492, бумага 9 968, итог 22 460 ===== */
         tz: [
             { name: 'Принтер лазерный HP LJ 107a', garant: 'Гарантийный срок годности 12 мес.', kol: 1, ed: 'шт.', summa: '12 492,00', podr: 'Кафедра госпитальной терапии имени ак. П.Е. Лукомского' },
             { name: 'Бумага офисная, А4, 80 г/м³', garant: 'Срок годности не ограничен', kol: 1, ed: 'коробка', summa: '9 968,00', podr: 'Кафедра госпитальной терапии имени ак. П.Е. Лукомского' }
@@ -595,7 +659,6 @@ const zakupki = {
             { postavshik: 'ООО "Технолаб"', kol: 1, cena: '32 456 руб.', sko: '', kvar: '', itogo: '' }
         ],
         nmckItogo: '22 460 руб.',
-        /* ===== ОБНОВЛЕНО: принтер 12 492, бумага 9 968 ===== */
         pfu: [
             { name: 'Принтер лазерный HP LJ 107a', kol: 1, ed: 'шт.', cena: '12 492,00', summa: '12 492,00', statya: '[310.02] Закупка компьютеров и оргтехники', kek: '310', proekt: 'Милушкина Ольга Юрьевна - Проректор по учебной работе', napr: 'Образовательные услуги ГЗ' },
             { name: 'Бумага офисная, А4, 80 г/м³', kol: 1, ed: 'коробка', cena: '9 968,00', summa: '9 968,00', statya: '[346.03] Принадлежности канцелярские бумажные', kek: '346', proekt: 'Милушкина Ольга Юрьевна - Проректор по учебной работе', napr: 'Образовательные услуги ГЗ' }
@@ -732,7 +795,7 @@ const zakupki = {
             adresIspolzovaniya: 'Москва, ул. Островитянова, 1', adresIspolzovaniyaNote: '(Адрес использования совпадает с адресом доставки)',
             fioPoluchatelya: 'Павлюк Алексей Владимирович', contactsPoluchatelya: '+7(495)222-33-44', emailPoluchatelya: 'uct@rsmu.ru',
             usedMethod: 'Метод сопоставимых рыночных цен', raschetCeny: '550 000 руб.',
-            nmckRows: [{ name: 'ООО "Технолаб"', value: '550 000 руб.' }], nmckItogo: '550 000 руб.',
+            nmckRows: [{ name: 'ООО "Технолаб"', value: '550 000 руб.' }], nmckItog: '550 000 руб.',
             bigReason: 'Закупка осуществляется методом запроса цен в связи с необходимостью обновления парка моноблоков в учебных аудиториях.'
         },
         tz: [{ name: 'Моноблок Иволга-505', garant: 'Гарантийный срок годности 24 мес.', kol: 21, ed: 'шт.', summa: '26 194,00', podr: 'УЦТ' }],
@@ -776,6 +839,7 @@ function cls(v) { return v === null || v === undefined ? '' : (v < 0 ? 'neg' : (
 function indicator(v) { if (v === null || v === undefined) return 'gray'; if (v < 0) return 'red'; if (v > 0) return 'green'; return 'yellow'; }
 function statusLabel(v) { if (v === null || v === undefined) return 'Нет данных'; if (v < 0) return 'Перерасход'; if (v > 0) return 'Резерв'; return 'В норме'; }
 function statusCell(v) { const ind = indicator(v); const l = statusLabel(v); return `<span class="status-cell"><span class="ind ${ind}"></span><span class="status-text ${ind}">${l}</span></span>`; }
+function escapeHtml(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
 /* ===================== НАВИГАЦИЯ ===================== */
 document.querySelectorAll('.lk-nav .nav-item').forEach(btn => {
@@ -1104,6 +1168,15 @@ function openDogovorModal(num) {
         </table>
         <div class="form-section-title">Исполнение договора</div>
         <div style="padding:8px 0;"><a class="contract-link" onclick="closeDogovorModal(); openGrafikModal('${d.num}');"><i class="fas fa-money-bill-wave" style="color:#2c6fc4;"></i> Открыть график платежей по договору</a></div>
+
+        <!-- ДОБАВЛЕНО: формирование служебных записок на основании договора -->
+        <div class="form-section-title">Служебные записки на основании договора</div>
+        <div class="memo-actions">
+            <button class="memo-btn" onclick="openMemoModal('increase_cost', '${d.num}')"><i class="fas fa-ruble-sign"></i> Об увеличении стоимости</button>
+            <button class="memo-btn" onclick="openMemoModal('increase_deadline', '${d.num}')"><i class="fas fa-calendar-plus"></i> Об увеличении сроков</button>
+            <button class="memo-btn danger" onclick="openMemoModal('termination', '${d.num}')"><i class="fas fa-file-circle-xmark"></i> О расторжении</button>
+            <button class="memo-btn" onclick="openMemoModal('claim_work', '${d.num}')"><i class="fas fa-gavel"></i> О начале претензионной работы</button>
+        </div>
     `;
     document.getElementById('dogovorOverlay').classList.add('open');
 }
@@ -1353,7 +1426,407 @@ function openZayavkaCard(gid, wi, zi) {
     document.getElementById('modalOverlay').classList.add('open');
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeDogovorModal(); closeGrafikModal(); closeZakupkaModal(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeDogovorModal(); closeGrafikModal(); closeZakupkaModal(); closeMemoModal(); } });
+
+/* ===================== ДОБАВЛЕНО: СЛУЖЕБНЫЕ ЗАПИСКИ ===================== */
+let currentMemo = null;
+
+const memoTypes = {
+    increase_cost: {
+        title: 'Об увеличении стоимости договора',
+        icon: 'fa-ruble-sign',
+        defaults: {
+            komu: 'Ректору ФГАОУ ВО РНИМУ им. Н.И. Пирогова Минздрава России\nд.м.н., профессору',
+            ot: 'Технического заказчика\nИванова И.И.',
+            prilozheniya: [
+                'Расчёт новой стоимости договора',
+                'Коммерческие предложения поставщиков',
+                'Обоснование необходимости увеличения стоимости'
+            ]
+        },
+        hasSumFields: true,
+        bodyFn: (m) =>
+            `По договору № ${m.dogovorNum} от ${m.dogovorDate} с ${m.kontragent} текущая сумма договора составляет ${m.currentSum}.` +
+            `\n\nВ связи с ${m.reason || '[указать причину]'} возникла необходимость увеличения стоимости договора` +
+            (m.increaseSum ? ` на ${m.increaseSum} руб.` : '') +
+            (m.increasePercent ? ` (${m.increasePercent}%)` : '') +
+            `.` +
+            (m.newSum ? `\n\nНовая сумма договора составит ${m.newSum} руб.` : '') +
+            (m.contractClause ? `\n\nОснование: п. ${m.contractClause} договора.` : '') +
+            `\n\nПрошу согласовать увеличение стоимости договора в установленном порядке.`
+    },
+    increase_deadline: {
+        title: 'Об увеличении сроков исполнения договора',
+        icon: 'fa-calendar-plus',
+        defaults: {
+            komu: 'Ректору ФГАОУ ВО РНИМУ им. Н.И. Пирогова Минздрава России\nд.м.н., профессору',
+            ot: 'Технического заказчика\nИванова И.И.',
+            prilozheniya: [
+                'Обоснование необходимости продления сроков',
+                'Письмо контрагента о причинах задержки',
+                'Скорректированный график исполнения'
+            ]
+        },
+        hasDateFields: true,
+        bodyFn: (m) =>
+            `По договору № ${m.dogovorNum} от ${m.dogovorDate} с ${m.kontragent} срок исполнения обязательств установлен до ${m.currentDate}.` +
+            `\n\nВ связи с ${m.reason || '[указать причину]'} возникла необходимость продления срока исполнения договора` +
+            (m.newDate ? ` до ${m.newDate}` : '') +
+            `.` +
+            `\n\nПрошу согласовать внесение изменений в договор в части продления срока исполнения.`
+    },
+    termination: {
+        title: 'О расторжении договора',
+        icon: 'fa-file-circle-xmark',
+        danger: true,
+        defaults: {
+            komu: 'Ректору ФГАОУ ВО РНИМУ им. Н.И. Пирогова Минздрава России\nд.м.н., профессору',
+            ot: 'Технического заказчика\nИванова И.И.',
+            prilozheniya: [
+                'Обоснование расторжения договора',
+                'Документы, подтверждающие основания расторжения',
+                'Расчёт фактически исполненных обязательств'
+            ]
+        },
+        bodyFn: (m) =>
+            `По договору № ${m.dogovorNum} от ${m.dogovorDate} с ${m.kontragent}.` +
+            `\n\nОснование для расторжения: ${m.reason || '[указать основание]'}.` +
+            `\n\nВ соответствии со ст. 450, 451, 523 ГК РФ и условиями договора прошу согласовать расторжение указанного договора.`
+    },
+    claim_work: {
+        title: 'О начале претензионной работы',
+        icon: 'fa-gavel',
+        defaults: {
+            komu: 'Ректору ФГАОУ ВО РНИМУ им. Н.И. Пирогова Минздрава России\nд.м.н., профессору',
+            ot: 'Технического заказчика\nИванова И.И.',
+            prilozheniya: [
+                'Акт проверки исполнения обязательств',
+                'Переписка с контрагентом',
+                'Расчёт неустойки (штрафа, пени)'
+            ]
+        },
+        hasClaimFields: true,
+        bodyFn: (m) =>
+            `По договору № ${m.dogovorNum} от ${m.dogovorDate} с ${m.kontragent} выявлены нарушения исполнения обязательств.` +
+            `\n\nОписание нарушений: ${m.reason || '[описание нарушений]'}.` +
+            (m.claimDemand ? `\n\nТребование: ${m.claimDemand}.` : '') +
+            (m.claimDeadline ? `\n\nСрок исполнения требования: до ${m.claimDeadline}.` : '') +
+            `\n\nВ связи с изложенным предлагается начать претензионную работу и направить претензию контрагенту.`
+    }
+};
+
+function openMemoModal(type, contractNum) {
+    const d = dogovory[contractNum];
+    if (!d) { alert('Договор не найден: ' + contractNum); return; }
+    const mt = memoTypes[type];
+    if (!mt) { alert('Неизвестный тип записки: ' + type); return; }
+
+    const parts = contractNum.split(' от ');
+    const dogovorNum = parts[0];
+    const dogovorDate = parts[1] || '';
+
+    currentMemo = {
+        type: type,
+        typeTitle: mt.title,
+        dogovorNum: dogovorNum,
+        dogovorDate: dogovorDate,
+        kontragent: d.kontragent,
+        currentSum: d.summa,
+        currentDate: d.srokPo,
+        komu: mt.defaults.komu,
+        ot: mt.defaults.ot,
+        outNum: '',
+        outDate: new Date().toLocaleDateString('ru-RU'),
+        reason: '',
+        increaseSum: '',
+        increasePercent: '',
+        newSum: '',
+        newDate: '',
+        claimDemand: '',
+        claimDeadline: '',
+        contractClause: '',
+        prilozheniya: [...mt.defaults.prilozheniya]
+    };
+
+    document.getElementById('memoTitle').textContent = 'Служебная записка: ' + mt.title;
+    renderMemoModal();
+    document.getElementById('memoOverlay').classList.add('open');
+}
+
+function closeMemoModal() {
+    document.getElementById('memoOverlay').classList.remove('open');
+    currentMemo = null;
+}
+
+function renderMemoModal() {
+    const m = currentMemo;
+    if (!m) return;
+    const mt = memoTypes[m.type];
+
+    let specificFields = '';
+    if (mt.hasSumFields) {
+        specificFields = `
+            <div class="mf-lbl">Текущая сумма договора</div>
+            <div class="mf-val"><input class="mf-input" value="${escapeHtml(m.currentSum)}" readonly></div>
+            <div class="mf-lbl">Сумма увеличения, руб.</div>
+            <div class="mf-val"><input class="mf-input highlight" data-field="increaseSum" value="${escapeHtml(m.increaseSum)}" placeholder="Введите сумму"></div>
+            <div class="mf-lbl">Процент увеличения, %</div>
+            <div class="mf-val"><input class="mf-input" data-field="increasePercent" value="${escapeHtml(m.increasePercent)}" placeholder="Автоматически"></div>
+            <div class="mf-lbl">Новая сумма договора, руб.</div>
+            <div class="mf-val"><input class="mf-input blue" data-field="newSum" value="${escapeHtml(m.newSum)}" placeholder="Автоматически"></div>
+            <div class="mf-lbl">Ссылка на пункт договора</div>
+            <div class="mf-val"><input class="mf-input" data-field="contractClause" value="${escapeHtml(m.contractClause)}" placeholder="Например: 3.2"></div>
+        `;
+    }
+    if (mt.hasDateFields) {
+        specificFields = `
+            <div class="mf-lbl">Текущий срок исполнения</div>
+            <div class="mf-val"><input class="mf-input" value="${escapeHtml(m.currentDate)}" readonly></div>
+            <div class="mf-lbl">Новый срок исполнения</div>
+            <div class="mf-val"><input class="mf-input highlight" data-field="newDate" value="${escapeHtml(m.newDate)}" placeholder="дд.мм.гггг"></div>
+        `;
+    }
+    if (mt.hasClaimFields) {
+        specificFields = `
+            <div class="mf-lbl">Требование по претензии</div>
+            <div class="mf-val"><textarea class="mf-textarea" data-field="claimDemand" placeholder="Например: оплатить неустойку в размере...">${escapeHtml(m.claimDemand)}</textarea></div>
+            <div class="mf-lbl">Срок исполнения требования</div>
+            <div class="mf-val"><input class="mf-input" data-field="claimDeadline" value="${escapeHtml(m.claimDeadline)}" placeholder="дд.мм.гггг"></div>
+        `;
+    }
+
+    const attachRows = m.prilozheniya.map((p, i) => `
+        <div class="memo-attach-row">
+            <i class="fas fa-paperclip fi"></i>
+            <input class="fname" data-attach="${i}" value="${escapeHtml(p)}" placeholder="Наименование приложения">
+            <button class="fdel" onclick="removeMemoAttachment(${i})" title="Удалить"><i class="fas fa-times"></i></button>
+        </div>
+    `).join('');
+
+    const formHTML = `
+        <div class="memo-form">
+            <div class="mf-lbl">Тип служебной записки</div>
+            <div class="mf-val"><input class="mf-input" value="${escapeHtml(m.typeTitle)}" readonly style="font-weight:600;color:#1a3a5c;"></div>
+
+            <div class="mf-lbl">Исх. №</div>
+            <div class="mf-val"><input class="mf-input" data-field="outNum" value="${escapeHtml(m.outNum)}" placeholder="Например: 01-15/234"></div>
+
+            <div class="mf-lbl">Дата</div>
+            <div class="mf-val"><input class="mf-input" data-field="outDate" value="${escapeHtml(m.outDate)}"></div>
+
+            <div class="mf-lbl">Кому</div>
+            <div class="mf-val"><textarea class="mf-textarea" data-field="komu" style="min-height:60px;">${escapeHtml(m.komu)}</textarea></div>
+
+            <div class="mf-lbl">От кого</div>
+            <div class="mf-val"><textarea class="mf-textarea" data-field="ot" style="min-height:60px;">${escapeHtml(m.ot)}</textarea></div>
+
+            <div class="mf-lbl">Договор</div>
+            <div class="mf-val"><input class="mf-input" value="№ ${escapeHtml(m.dogovorNum)} от ${escapeHtml(m.dogovorDate)}" readonly></div>
+
+            <div class="mf-lbl">Контрагент</div>
+            <div class="mf-val"><input class="mf-input" value="${escapeHtml(m.kontragent)}" readonly></div>
+
+            ${specificFields}
+
+            <div class="mf-lbl">Обоснование</div>
+            <div class="mf-val"><textarea class="mf-textarea" data-field="reason" placeholder="Опишите причину / основание..." style="min-height:110px;">${escapeHtml(m.reason)}</textarea></div>
+
+            <div class="mf-lbl">Приложения (обосновывающие)</div>
+            <div class="mf-val">
+                <div class="memo-attach-wrap">
+                    <div class="memo-attach-list" id="memoAttachList">${attachRows}</div>
+                    <button class="memo-add-attach" onclick="addMemoAttachment()"><i class="fas fa-plus"></i> Добавить приложение</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const previewHTML = buildMemoHTML(m);
+
+    document.getElementById('memoBody').innerHTML = `
+        <div class="zak-tabs" id="memoTabs">
+            <button class="zak-tab active" data-tab="form"><i class="fas fa-edit" style="margin-right:6px;"></i>Формирование</button>
+            <button class="zak-tab" data-tab="preview"><i class="fas fa-file-alt" style="margin-right:6px;"></i>Предпросмотр</button>
+        </div>
+        <div class="zak-tab-panel" data-tab="form">${formHTML}</div>
+        <div class="zak-tab-panel" data-tab="preview" style="display:none;">
+            <div class="memo-preview" id="memoPreview">${previewHTML}</div>
+        </div>
+    `;
+
+    document.querySelectorAll('#memoTabs .zak-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#memoTabs .zak-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const target = tab.dataset.tab;
+            document.querySelectorAll('#memoBody .zak-tab-panel').forEach(p => {
+                p.style.display = p.dataset.tab === target ? '' : 'none';
+            });
+            if (target === 'preview') updateMemoPreview();
+        });
+    });
+
+    document.querySelectorAll('#memoBody [data-field]').forEach(inp => {
+        inp.addEventListener('input', (e) => {
+            const f = e.target.dataset.field;
+            currentMemo[f] = e.target.value;
+            autoCalcMemo();
+            updateMemoPreview();
+        });
+    });
+
+    document.querySelectorAll('#memoBody [data-attach]').forEach(inp => {
+        inp.addEventListener('input', (e) => {
+            const i = Number(e.target.dataset.attach);
+            currentMemo.prilozheniya[i] = e.target.value;
+            updateMemoPreview();
+        });
+    });
+}
+
+function autoCalcMemo() {
+    const m = currentMemo;
+    if (!m) return;
+    if (m.type === 'increase_cost') {
+        const cur = parseFloat(String(m.currentSum).replace(/[^\d.,]/g, '').replace(/\s/g, '').replace(',', '.')) || 0;
+        const inc = parseFloat(String(m.increaseSum).replace(/[^\d.,]/g, '').replace(/\s/g, '').replace(',', '.')) || 0;
+        if (cur > 0 && inc > 0) {
+            m.increasePercent = ((inc / cur) * 100).toFixed(2);
+            m.newSum = (cur + inc).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const pi = document.querySelector('#memoBody [data-field="increasePercent"]');
+            const nsi = document.querySelector('#memoBody [data-field="newSum"]');
+            if (pi) pi.value = m.increasePercent;
+            if (nsi) nsi.value = m.newSum;
+        }
+    }
+}
+
+function buildMemoHTML(m) {
+    const mt = memoTypes[m.type];
+    const body = mt.bodyFn(m);
+    const attachList = m.prilozheniya
+        .filter(p => p && p.trim())
+        .map((p, i) => `<div class="mp-attach-item">${i + 1}. ${escapeHtml(p)}</div>`)
+        .join('');
+
+    return `
+        <div class="mp-org">ФГАОУ ВО РНИМУ им. Н.И. Пирогова Минздрава России</div>
+        <div class="mp-org-sub">Личный кабинет технического заказчика</div>
+
+        <div style="text-align:right;font-size:12.5px;">Исх. № ${escapeHtml(m.outNum || '______')} от ${escapeHtml(m.outDate || '___________')}</div>
+
+        <div class="mp-title">Служебная записка<br><span style="text-transform:none;font-weight:600;">${escapeHtml(m.typeTitle)}</span></div>
+
+        <div class="mp-meta">
+            <div class="mk">Кому:</div><div class="mv" style="white-space:pre-line;">${escapeHtml(m.komu || '—')}</div>
+            <div class="mk">От кого:</div><div class="mv" style="white-space:pre-line;">${escapeHtml(m.ot || '—')}</div>
+            <div class="mk">Договор:</div><div class="mv">№ ${escapeHtml(m.dogovorNum)} от ${escapeHtml(m.dogovorDate)}</div>
+            <div class="mk">Контрагент:</div><div class="mv">${escapeHtml(m.kontragent)}</div>
+        </div>
+
+        <div class="mp-body">${body.replace(/[<>]/g, c => c === '<' ? '&lt;' : '&gt;')}</div>
+
+        ${attachList ? `
+            <div class="mp-attach-title">Приложения:</div>
+            ${attachList}
+        ` : ''}
+
+        <div class="mp-sign">
+            <div>
+                <span class="sig-name">Технический заказчик</span>
+                <span class="sig-line"></span>
+                <span class="sig-name">Иванов И.И.</span>
+            </div>
+            <div class="sig-name">«____» ______________ 20____ г.</div>
+        </div>
+    `;
+}
+
+function updateMemoPreview() {
+    const p = document.getElementById('memoPreview');
+    if (p && currentMemo) p.innerHTML = buildMemoHTML(currentMemo);
+}
+
+function addMemoAttachment() {
+    if (!currentMemo) return;
+    currentMemo.prilozheniya.push('');
+    renderMemoModal();
+}
+
+function removeMemoAttachment(idx) {
+    if (!currentMemo) return;
+    currentMemo.prilozheniya.splice(idx, 1);
+    renderMemoModal();
+}
+
+function printMemo() {
+    const m = currentMemo;
+    if (!m) { alert('Служебная записка не сформирована'); return; }
+    const html = buildMemoHTML(m);
+    const w = window.open('', '_blank', 'width=900,height=1000');
+    if (!w) { alert('Разрешите всплывающие окна для печати'); return; }
+    w.document.write(`<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>Служебная записка</title>
+    <style>
+        body { font-family: 'Times New Roman', Times, serif; font-size: 14px; line-height: 1.55; padding: 40px 50px; color: #000; max-width: 800px; margin: 0 auto; }
+        .mp-org { text-align: center; font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+        .mp-org-sub { text-align: center; font-size: 13px; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 12px; color: #555; }
+        .mp-title { text-align: center; font-weight: 700; margin: 22px 0 18px; font-size: 15px; text-transform: uppercase; }
+        .mp-meta { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin-bottom: 18px; font-size: 13px; }
+        .mp-meta .mk { color: #555; }
+        .mp-meta .mv { font-weight: 600; }
+        .mp-body { text-indent: 28px; margin-bottom: 10px; white-space: pre-line; text-align: justify; }
+        .mp-attach-title { margin-top: 20px; font-weight: 700; }
+        .mp-attach-item { margin-left: 28px; font-size: 13px; margin-bottom: 3px; }
+        .mp-sign { margin-top: 40px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: end; }
+        .mp-sign .sig-line { border-bottom: 1px solid #000; min-width: 160px; display: inline-block; margin: 0 8px; }
+        .mp-sign .sig-name { font-size: 13px; }
+        @media print { body { padding: 15mm; } }
+    </style></head><body>${html}</body></html>`);
+    w.document.close();
+    setTimeout(() => { w.focus(); w.print(); }, 300);
+}
+
+function saveMemo() {
+    const m = currentMemo;
+    if (!m) { alert('Служебная записка не сформирована'); return; }
+    const mt = memoTypes[m.type];
+    const body = mt.bodyFn(m);
+    const attachList = m.prilozheniya.filter(p => p && p.trim()).map((p, i) => `${i + 1}. ${p}`).join('\n');
+
+    const text = [
+        'ФГАОУ ВО РНИМУ им. Н.И. Пирогова Минздрава России',
+        '',
+        'СЛУЖЕБНАЯ ЗАПИСКА',
+        m.typeTitle,
+        '',
+        `Исх. № ${m.outNum || '______'} от ${m.outDate || '___________'}`,
+        '',
+        `Кому: ${m.komu}`,
+        `От кого: ${m.ot}`,
+        '',
+        `Договор: № ${m.dogovorNum} от ${m.dogovorDate}`,
+        `Контрагент: ${m.kontragent}`,
+        '',
+        '─'.repeat(60),
+        '',
+        body,
+        '',
+        attachList ? `Приложения:\n${attachList}` : '',
+        '',
+        '',
+        'Технический заказчик  _________________  Иванов И.И.',
+        '',
+        '«____» _________________ 20____ г.'
+    ].join('\n');
+
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `Служебная_записка_${m.type}_${m.dogovorNum}.txt`;
+    a.click();
+
+    alert('Служебная записка сформирована и сохранена.\nФайл загружен в папку «Загрузки».');
+}
 
 function init() { renderKpiPanel(); renderChart(); renderTable(); }
 init();
